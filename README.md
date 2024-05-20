@@ -27,5 +27,5 @@ Projeto de um sistema de gerenciamento de frota de veículos e motoristas para u
 | Nome                          | GitHub                                        | LinkedIn                                 
 |-------------------------------|-----------------------------------------------| ----------------------------------------- 
 | João Vítor Klein John         | [GitHub](https://github.com/joaovjohn)        | [LinkedIn](https://www.linkedin.com/in/joao-vitor-john/)
-| Henrique Simonato             | [GitHub]()                                    | [LinkedIn]()
+| Henrique Simonato             | [GitHub](https://github.com/sim0nato)         | [LinkedIn](https://www.linkedin.com/in/henrique-simonato/)
 | Ruan de Souza                 | [GitHub](https://github.com/Ruan2PVS9)        | [LinkedIn](https://www.linkedin.com/in/ruanvsouza/)
