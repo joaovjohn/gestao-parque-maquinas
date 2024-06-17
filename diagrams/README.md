@@ -19,3 +19,9 @@ No arquivo `requisitos_aplicacao.pdf`, você encontrará as seguintes categorias
   - Tela de motoristas
   - Tela de localidades
   - Tela de relatórios
+- Casos de testes
+  - BDD Dashboard
+  - BDD Tela de serviços
+  - BDD Tela de relatários
+  - BDD Tela de motoristas
+  - BDD Tela de localidades
