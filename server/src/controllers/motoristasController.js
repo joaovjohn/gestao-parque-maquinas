@@ -1,24 +1,27 @@
-const Motorista = require('../models/motorista');
-const {db} = require('../config/connection');
+const motoristaModel = require('../models/motoristaModel');
+
 
 
 const index =  async (req, res) => {
-    // conts motoristas = await Motorista.getAll();
-    return res.status(200).json({ data : motoristas});
+  try {
+    const motoristas = await motoristaModel.getAllMotoristas();
+    res.json({data: motoristas});
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-const getAll = async (req, res)  => {
-    try {
-        const courses = db.all('SELECT * from motorista');
-        res.status(200).json(courses);
-      }
-      catch (err) {
-        console.log(err)
-        res.status(500).json({message:  err})
-      }
-};
+const create = async (req,res) => {
+  try {
+    const newMotorista = await motoristaModel.createMotorista(req.body);
+    res.status(201).json(newMotorista);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 
 module.exports = {
-    index,
-    getAll
+    index, create
+
 };
