@@ -11,6 +11,16 @@ const index =  async (req, res) => {
   }
 };
 
+const show =  async (req, res) => {
+  try {
+    const motoristas = await motoristaModel.getMotoristaById(req.id);
+    res.json({data: motoristas});
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 const create = async (req,res) => {
   try {
     const newMotorista = await motoristaModel.createMotorista(req.body);
