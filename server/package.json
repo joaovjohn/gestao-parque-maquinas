@@ -8,9 +8,15 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "joi": "^17.13.3",
-    "mysql2": "^3.10.1"
+    "mysql2": "^3.10.1",
+    "pg-promise": "^11.6.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db_create": "node src/config/db-setup.js"
   }
 }
