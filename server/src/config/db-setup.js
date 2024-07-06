@@ -9,7 +9,7 @@ async function createDatabase() {
   const client = pgp({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    database: 'postgres',
+    database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
   });
@@ -54,6 +54,7 @@ async function runMigrations() {
   } catch (err) {
     console.error('Erro ao executar migrações:', err);
   } finally {
+    console.log('Fechando conexão com o banco de dados.');
     await pgp.end();
   }
 }
