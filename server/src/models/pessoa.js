@@ -6,6 +6,8 @@ class Pessoa {
     static EM_SERVICO = 2;
     static INATIVO = 3;
 
+    static tableName = 'pessoa';
+
     constructor(id, cpf, status, data_nasc, email, senha, login, nome) {
         this.id = id;
         this.cpf = cpf;
@@ -19,9 +21,7 @@ class Pessoa {
 
     static validate(pessoa) {
         const schema = v.object({
-            id: v.number().integer().required(),
             cpf: v.string().length(11).required(),
-            status: v.number().integer().required(),
             data_nasc: v.date().allow(null),
             email: v.string().email().max(50).allow(null),
             senha: v.string().min(8).max(100).required(),
@@ -29,7 +29,9 @@ class Pessoa {
             nome: v.string().max(256).required(),
         });
 
-        return schema.validate(pessoa);
+        const validation = schema.validate(pessoa);
+        const orderedFields = Object.keys(schema.describe().keys);
+        return { validation, orderedFields };
     }
 }
 module.exports = Pessoa;

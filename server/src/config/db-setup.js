@@ -54,6 +54,7 @@ async function runMigrations() {
   } catch (err) {
     console.error('Erro ao executar migrações:', err);
   } finally {
+    console.log('Fechando conexão com o banco de dados.');
     await pgp.end();
   }
 }
