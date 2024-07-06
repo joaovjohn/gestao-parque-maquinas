@@ -21,7 +21,7 @@ CONSTRAINT pk_marca PRIMARY KEY (id)
 CREATE TABLE IF NOT EXISTS public.pessoa (
     id serial NOT NULL,
     cpf varchar(11) UNIQUE NOT NULL,
-    status integer DEFAULT 0 NOT NULL, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - inativo)
+    status integer DEFAULT 1 NOT NULL, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - inativo)
     data_nasc date NULL,
     email varchar(50) UNIQUE NOT NULL,
     senha varchar(100) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.veiculo (
     id serial NOT NULL,
     categoria varchar(50) NOT NULL,
     placa varchar(7) NULL,
-    status integer NOT NULL DEFAULT 0, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - em manutencao)
+    status integer NOT NULL DEFAULT 1, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - em manutencao)
     nome varchar(256) NOT NULL,
     tipo_uso integer NOT NULL, -- flag para uso de tempo/quilometragem (1 - veiculo, 2 - maquina)
     id_marca integer NOT NULL,
