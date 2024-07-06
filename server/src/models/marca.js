@@ -11,12 +11,13 @@ class Marca {
 
     static validate(marca) {
         const schema = v.object({
-            id: v.number().integer(),
             sigla: v.string().max(256).required(),
             nome: v.string().max(256).required(),
         });
 
-        return schema.validate(marca);
+        const validation = schema.validate(marca);
+        const orderedFields = Object.keys(schema.describe().keys);
+        return { validation, orderedFields };
     }
 }
 
