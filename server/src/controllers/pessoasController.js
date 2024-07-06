@@ -1,9 +1,10 @@
-const pessoaModel = require('../models/pessoaModel');
 const pessoaService = require('../services/pessoaService');
 
 const index =  async (req, res) => {
+  const fieldsToSelect = ['id' ,'status', 'data_nasc','email','login', 'nome'];
+
   try {
-    const pessoas = await pessoaModel.getAll();
+    const pessoas = await pessoaService.getAll(fieldsToSelect);
     res.json({data: pessoas});
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -47,7 +48,7 @@ const update = async (req,res) => {
 
 const destroy = async (req,res) => {
   try {
-    await pessoaModel.destroy(req.params.id)
+    await pessoaService.delete(req.params.id)
     return res.status(201).json({message: 'Pessoa removida com sucesso'});  
   } catch (err) {
     console.log(err)

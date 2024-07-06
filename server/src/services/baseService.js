@@ -32,6 +32,7 @@ class BaseService {
 
     }
 
+    // int id, array fieldsToSelect
     async getByPrimaryKey(id, fieldsToSelect) {
 
         if (fieldsToSelect !== '*') {
@@ -50,8 +51,9 @@ class BaseService {
 
     }
 
-
-
+    async delete(id) {
+        return await db.query(`DELETE FROM ${this.model.tableName} WHERE id = $1`, [id]);
+    }
 
 }
 

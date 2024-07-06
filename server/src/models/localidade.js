@@ -1,6 +1,9 @@
 const v = require('joi');
 
 class Localidade {
+
+    static tableName = 'localidade';
+
     constructor(id, nome, cidade, uf, pais, latitude, longitude) {
         this.id = id;
         this.nome = nome;
@@ -13,7 +16,6 @@ class Localidade {
 
     static validate(localidade) {
         const schema = v.object({
-            id: v.number().integer().required(),
             nome: v.string().max(256).required(),
             cidade: v.string().max(256).required(),
             uf: v.string().length(2).required(),
@@ -22,7 +24,9 @@ class Localidade {
             longitude: v.string().max(50).allow(null),
         });
 
-        return schema.validate(localidade);
+        const validation = schema.validate(localidade);
+        const orderedFields = Object.keys(schema.describe().keys);
+        return { validation, orderedFields };
     }
 }
 module.exports = Localidade;
