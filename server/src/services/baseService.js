@@ -28,14 +28,8 @@ class BaseService {
         // gera uma string com os campos separados por virgula para inserir
         const fieldsString = orderedFields.join(',');
 
-        const result = await db.query(`INSERT INTO ${this.model.tableName} (${fieldsString}) VALUES (${params}) RETURNING *`, values);
+        return await db.query(`INSERT INTO ${this.model.tableName} (${fieldsString}) VALUES (${params}) RETURNING *`, values);
 
-        // validacao para saber se teve sucesso ou nao
-        if (result.rowCount === 0) {
-            throw new Error('Erro ao inserir item no banco de dados');
-        }
-
-        return result;
     }
 
     async getByPrimaryKey(id, fieldsToSelect) {
@@ -45,7 +39,6 @@ class BaseService {
         }
 
         return await db.query(`SELECT ${fieldsToSelect} FROM ${this.model.tableName} WHERE id = $1`, [id]);
-
     }
 
     async getAll(fieldsToSelect = '*') {
