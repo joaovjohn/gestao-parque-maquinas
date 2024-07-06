@@ -3,6 +3,7 @@ const router = express.Router();
 const motoristasController = require('./controllers/motoristasController');
 const pessoasController = require('./controllers/pessoasController');
 const marcaController = require('./controllers/marcaController');
+const localidadeController = require('./controllers/localidadeController');
 
 router.get('/status', (req, res) => {
     res.status(200).send({ status: 'ok' });
