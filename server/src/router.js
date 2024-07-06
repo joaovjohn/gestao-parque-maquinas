@@ -29,7 +29,12 @@ router.post('/marca', marcaController.create);
 // router.put('/marca/:id', marcaController.update);
 router.delete('/marca/:id', marcaController.destroy);
 
-
+// Rotas de Localidades
+router.get('/localidade', localidadeController.index);
+router.get('/localidade/:id', localidadeController.show);
+router.post('/localidade', localidadeController.create);
+// router.put('/localidade/:id', localidadeController.update);
+router.delete('/localidade/:id', localidadeController.destroy);
 
 
 module.exports = router;

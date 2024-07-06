@@ -1,4 +1,3 @@
-const pessoaModel = require('../models/pessoaModel');
 const pessoaService = require('../services/pessoaService');
 
 const index =  async (req, res) => {
