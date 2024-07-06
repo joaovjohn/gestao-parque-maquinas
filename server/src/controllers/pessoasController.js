@@ -10,10 +10,11 @@ const index =  async (req, res) => {
   }
 };
 
-
 const show =  async (req, res) => {
+  const fieldsToSelect = ['id' ,'status', 'data_nasc','email','login', 'nome'];
+
   try {
-    const pessoa = await pessoaModel.getById(req.params.id);
+    const pessoa = await pessoaService.getByPrimaryKey(req.params.id, fieldsToSelect);
     res.json({data: pessoa});
   } catch (err) {
     console.log(err)
@@ -53,9 +54,6 @@ const destroy = async (req,res) => {
     return res.status(500).json({ error: err.message });
   }
 }
-
-
-
 
 module.exports = {
     create,

@@ -38,28 +38,28 @@ class BaseService {
         return result;
     }
 
-    async getAll() {
-        const result = await db.query(`SELECT * FROM ${this.model.tableName}`);
-        return result.rows;
-    }
+    async getByPrimaryKey(id, fieldsToSelect) {
 
-    async getById(id) {
-        const result = await db.query(`SELECT * FROM ${this.model.tableName} WHERE id = $1`, [id]);
-        return result.rows[0];
-    }
-
-    async update(id, item) {
-        const { error } = this.model.validate(item);
-        if (error) {
-            throw new Error(error.details[0].message);
+        if (fieldsToSelect !== '*') {
+            fieldsToSelect = fieldsToSelect.join(',');
         }
-        const result = await db.query(`UPDATE ${this.model.tableName} SET nome = $1 WHERE id = $2 RETURNING *`, [item, id]);
-        return result.rows[0];
+
+        return await db.query(`SELECT ${fieldsToSelect} FROM ${this.model.tableName} WHERE id = $1`, [id]);
+
     }
 
-    async delete(id) {
-        await db.query(`DELETE FROM ${this.model.tableName} WHERE id = $1`, [id]);
+    async getAll(fieldsToSelect = '*') {
+        if (fieldsToSelect !== '*') {
+            fieldsToSelect = fieldsToSelect.join(',');
+        }
+
+        return await db.query(`SELECT ${fieldsToSelect} FROM ${this.model.tableName}`);
+
     }
+
+
+
+
 }
 
 module.exports = BaseService;

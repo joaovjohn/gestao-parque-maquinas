@@ -7,17 +7,16 @@ router.get('/status', (req, res) => {
     res.status(200).send({ status: 'ok' });
 });
 
-router.get('/pessoas', pessoasController.index);
-router.get('/pessoas/:id', pessoasController.show);
-router.post('/pessoas', pessoasController.create);
-router.put('/pessoas/:id', pessoasController.update);
-router.delete('/pessoas/:id', pessoasController.destroy);
+router.get('/pessoa', pessoasController.index);
+router.get('/pessoa/:id', pessoasController.show);
+router.post('/pessoa', pessoasController.create);
+router.put('/pessoa/:id', pessoasController.update);
+router.delete('/pessoa/:id', pessoasController.destroy);
 
-router.get('/motoristas', motoristasController.index);
-// router.get('/motoristas/:id', pessoaController.show);
-router.post('/motoristas', motoristasController.create);
-// router.put('/motoristas/:id', pessoaController.update);
-// router.delete('/motoristas/:id', pessoaController.delete);
-
+router.get('/motorista', motoristasController.index);
+// router.get('/motorista/:id', pessoaController.show);
+router.post('/motorista', motoristasController.create);
+// router.put('/motorista/:id', pessoaController.update);
+// router.delete('/motorista/:id', pessoaController.delete);
 
 module.exports = router;
