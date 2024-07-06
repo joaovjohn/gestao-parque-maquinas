@@ -60,6 +60,6 @@ module.exports = {
     create,
     index,
     show,
-    // update,
+    update,
     destroy
 }
