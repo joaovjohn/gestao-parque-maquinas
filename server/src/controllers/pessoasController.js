@@ -1,6 +1,5 @@
 const pessoaModel = require('../models/pessoaModel');
-
-
+const pessoaService = require('../services/pessoaService');
 
 const index =  async (req, res) => {
   try {
@@ -25,7 +24,8 @@ const show =  async (req, res) => {
 const create = async (req,res) => {
   try {
     const pess = req.body;
-    const newPessoa = await pessoaModel.create(pess);
+    const newPessoa = await pessoaService.create(pess);
+
     res.status(201).json(newPessoa);
   } catch (err) {
     console.log(err)
