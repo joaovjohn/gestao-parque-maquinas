@@ -56,8 +56,9 @@ class BaseService {
         return await db.query(`SELECT ${fieldsToSelect} FROM ${this.model.tableName}`);
     }
 
-
-
+    async delete(id) {
+        return await db.query(`DELETE FROM ${this.model.tableName} WHERE id = $1`, [id]);
+    }
 
 }
 
