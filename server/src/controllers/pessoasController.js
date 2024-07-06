@@ -37,7 +37,7 @@ const create = async (req,res) => {
 const update = async (req,res) => {
   try {
     const pess = req.body;
-    const pessoa = await pessoaModel.update(pess);
+    const pessoa = await pessoaService.update(req.params.id,pess);
     res.status(201).json(pessoa);
   } catch (err) {
     console.log(err)
