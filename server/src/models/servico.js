@@ -7,6 +7,8 @@ class Servico {
     static EM_ANDAMENTO = 4;
     static FINALIZADO = 5;
 
+    static tableName = 'servico';
+
     constructor(id, status, dt_solicita, descricao, prioridade, dt_aprovacao, usuario_aprovacao, supervisor_id, localidade_id, solicitante_id) {
         this.id = id;
         this.status = status;
@@ -22,8 +24,6 @@ class Servico {
 
     static validate(servico) {
         const schema = v.object({
-            id: v.number().integer().required(),
-            status: v.number().integer().required(),
             dt_solicita: v.date().required(),
             descricao: v.string().max(200).required(),
             prioridade: v.number().integer().required(),
@@ -34,7 +34,10 @@ class Servico {
             solicitante_id: v.number().integer().required()
         });
 
-        return schema.validate(servico);
+        const validation = schema.validate(servico);
+        const orderedFields = Object.keys(schema.describe().keys);
+
+        return { validation, orderedFields };
     }
 }
 

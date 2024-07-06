@@ -2,6 +2,8 @@ const v = require('joi');
 
 class Supervisor {
 
+    static tableName = 'supervisor';
+
     constructor(id, pessoa_id) {
         this.id = id;
         this.pessoa_id = pessoa_id;
@@ -13,7 +15,10 @@ class Supervisor {
             pessoa_id: v.number().integer().required(),
         });
 
-        return schema.validate(supervisor);
+        const validation = schema.validate(supervisor);
+        const orderedFields = Object.keys(schema.describe().keys);
+
+        return { validation, orderedFields };
     }
 }
 

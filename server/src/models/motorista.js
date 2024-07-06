@@ -1,6 +1,9 @@
 const v = require('joi');
 
 class Motorista {
+
+    static tableName = 'motorista';
+
     constructor(pessoa_id, num_cnh, categoria_cnh) {
         this.pessoa_id = pessoa_id;
         this.num_cnh = num_cnh;
@@ -14,7 +17,9 @@ class Motorista {
             categoria_cnh: v.string().length(2).required(),
         });
 
-        return schema.validate(motorista);
+        const validation = schema.validate(motorista);
+        const orderedFields = Object.keys(schema.describe().keys);
+        return { validation, orderedFields };
     }
 }
 

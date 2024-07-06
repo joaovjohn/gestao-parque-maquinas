@@ -1,4 +1,4 @@
-const motoristaModel = require('../models/motoristaModel');
+const motoristaModel = require('../services/motoristaService');
 
 
 
