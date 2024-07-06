@@ -38,16 +38,16 @@ const create = async (req,res) => {
     }
 }
 
-// const update = async (req,res) => {
-//     try {
-//         const loc = req.body;
-//         const localidade = await localidadeService.update(loc);
-//         res.status(201).json(localidade);
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).json({ error: err.message });
-//     }
-// }
+const update = async (req,res) => {
+    try {
+        const loc = req.body;
+        const localidade = await localidadeService.update(req.params.id, loc);
+        res.status(201).json(localidade);
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ error: err.message });
+    }
+}
 
 const destroy = async (req,res) => {
     try {
@@ -63,6 +63,6 @@ module.exports = {
     create,
     index,
     show,
-    // update,
+    update,
     destroy
 };
