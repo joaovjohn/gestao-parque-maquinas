@@ -8,7 +8,7 @@ const index =  async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
+};
 
 const show =  async (req, res) => {
     try {
@@ -18,7 +18,7 @@ const show =  async (req, res) => {
      console.log(err)
      res.status(500).json({ error: err.message });
     }
-}
+};
 
 const create = async (req,res) => {
     try {
@@ -35,7 +35,7 @@ const create = async (req,res) => {
         console.log(err)
         res.status(500).json({ error: err.message });
     }
-}
+};
 
 const update = async (req, res) => {
     try {
@@ -47,7 +47,7 @@ const update = async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-}
+};
 
 const destroy = async (req, res) => {
     try {
