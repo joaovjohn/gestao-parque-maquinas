@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const authRouter = express.Router(); 
+const auth = require('./middlewares/auth');
+const passport = require('passport');
 const motoristaController = require('./controllers/motoristaController');
 const pessoaController = require('./controllers/pessoaController');
 const marcaController = require('./controllers/marcaController');
@@ -7,44 +10,50 @@ const localidadeController = require('./controllers/localidadeController');
 const veiculoController = require('./controllers/veiculoController');
 const supervisorController = require('./controllers/supervisorController');
 
+authRouter.use(passport.authenticate('jwt', { session: false }));
+
 router.get('/status', (req, res) => {
     res.status(200).send({ status: 'ok' });
 });
 
+router.post('/login', auth.login);
+
 // Rotas de pessoas
-router.get('/pessoa', pessoaController.index);
-router.get('/pessoa/:id', pessoaController.show);
-router.post('/pessoa', pessoaController.create);
-router.put('/pessoa/:id', pessoaController.update);
-router.delete('/pessoa/:id', pessoaController.destroy);
+authRouter.get('/pessoa',passport.authenticate('jwt',{session: false}), pessoaController.index);
+authRouter.get('/pessoa/:id', pessoaController.show);
+authRouter.post('/pessoa', pessoaController.create);
+authRouter.put('/pessoa/:id', pessoaController.update);
+authRouter.delete('/pessoa/:id', pessoaController.destroy);
 
 // Rotas de motoristas
-router.get('/motorista', motoristaController.index);
-router.get('/motorista/:id', motoristaController.show);
-router.post('/motorista', motoristaController.create);
-router.put('/motorista/:id', motoristaController.update);
-router.delete('/motorista/:id', motoristaController.destroy);
+authRouter.get('/motorista', motoristaController.index);
+authRouter.get('/motorista/:id', motoristaController.show);
+authRouter.post('/motorista', motoristaController.create);
+authRouter.put('/motorista/:id', motoristaController.update);
+authRouter.delete('/motorista/:id', motoristaController.destroy);
 
 // Rotas de Marcas
-router.get('/marca', marcaController.index);
-router.get('/marca/:id', marcaController.show);
-router.post('/marca', marcaController.create);
-router.put('/marca/:id', marcaController.update);
-router.delete('/marca/:id', marcaController.destroy);
+authRouter.get('/marca', marcaController.index);
+authRouter.get('/marca/:id', marcaController.show);
+authRouter.post('/marca', marcaController.create);
+authRouter.put('/marca/:id', marcaController.update);
+authRouter.delete('/marca/:id', marcaController.destroy);
 
 // Rotas de Localidades
-router.get('/localidade', localidadeController.index);
-router.get('/localidade/:id', localidadeController.show);
-router.post('/localidade', localidadeController.create);
-router.put('/localidade/:id', localidadeController.update);
-router.delete('/localidade/:id', localidadeController.destroy);
+authRouter.get('/localidade', localidadeController.index);
+authRouter.get('/localidade/:id', localidadeController.show);
+authRouter.post('/localidade', localidadeController.create);
+authRouter.put('/localidade/:id', localidadeController.update);
+authRouter.delete('/localidade/:id', localidadeController.destroy);
 
 // Rotas de Veiculos
-router.get('/veiculo', veiculoController.index);
-router.get('/veiculo/:id', veiculoController.show);
-router.post('/veiculo', veiculoController.create);
-router.put('/veiculo/:id', veiculoController.update);
-router.delete('/veiculo/:id', veiculoController.destroy);
+authRouter.get('/veiculo', veiculoController.index);
+authRouter.get('/veiculo/:id', veiculoController.show);
+authRouter.post('/veiculo', veiculoController.create);
+authRouter.put('/veiculo/:id', veiculoController.update);
+authRouter.delete('/veiculo/:id', veiculoController.destroy);
+
+router.use('/', authRouter);
 
 // Rotas de Supervisor
 router.get('/supervisor', supervisorController.index);
