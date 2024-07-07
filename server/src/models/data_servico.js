@@ -20,7 +20,7 @@ class DataServico {
             dt_final: v.date()
         });
 
-        const validation = schema.validate(dataServico);
+        const validation = schema.validate(dataServico,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }

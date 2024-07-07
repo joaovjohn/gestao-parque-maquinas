@@ -24,7 +24,7 @@ class Localidade {
             longitude: v.string().max(50).allow(null),
         });
 
-        const validation = schema.validate(localidade);
+        const validation = schema.validate(localidade,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }

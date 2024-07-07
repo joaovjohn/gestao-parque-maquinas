@@ -15,7 +15,7 @@ class Supervisor {
             pessoa_id: v.number().integer().required(),
         });
 
-        const validation = schema.validate(supervisor);
+        const validation = schema.validate(supervisor,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
 
         return { validation, orderedFields };

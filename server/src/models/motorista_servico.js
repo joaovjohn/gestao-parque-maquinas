@@ -16,7 +16,7 @@ class MotoristaServico {
             servico_id: v.number().integer().required(),
         });
 
-        const validation = schema.validate(motoristaServico);
+        const validation = schema.validate(motoristaServico,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }

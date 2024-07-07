@@ -19,7 +19,7 @@ class VeiculoServico {
             distancia: v.number().integer()
         });
 
-        const validation = schema.validate(veiculoServico);
+        const validation = schema.validate(veiculoServico,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
 
         return { validation, orderedFields };

@@ -34,7 +34,7 @@ class Servico {
             solicitante_id: v.number().integer().required()
         });
 
-        const validation = schema.validate(servico);
+        const validation = schema.validate(servico,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
 
         return { validation, orderedFields };
