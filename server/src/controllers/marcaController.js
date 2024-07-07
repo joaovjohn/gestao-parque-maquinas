@@ -35,16 +35,16 @@ const create = async (req, res) => {
     }
 };
 
-// const update = async (req, res) => {
-//     try {
-//         const marca = req.body;
-//         const updatedMarca = await marcaService.update(req.params.id, marca);
-//         res.status(201).json(updatedMarca);
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).json({ error: err.message });
-//     }
-// }
+const update = async (req, res) => {
+    try {
+        const marca = req.body;
+        const updatedMarca = await marcaService.update(req.params.id, marca);
+        res.status(201).json(updatedMarca);
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ error: err.message });
+    }
+}
 
 const destroy = async (req, res) => {
     try {
@@ -60,6 +60,6 @@ module.exports = {
     create,
     index,
     show,
-    // update,
+    update,
     destroy
 }

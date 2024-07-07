@@ -2,6 +2,8 @@ const v = require('joi');
 
 class DataServico {
 
+    static tableName = 'data_servico';
+
     constructor(id, id_servico, dt_cadastro, dt_inicio, dt_final) {
         this.id = id;
         this.id_servico = id_servico;
@@ -12,14 +14,15 @@ class DataServico {
 
     static validate(dataServico) {
         const schema = v.object({
-            id: v.number().integer().required(),
             id_servico: v.number().integer().required(),
             dt_cadastro: v.date().required(),
             dt_inicio: v.date(),
             dt_final: v.date()
         });
 
-        return schema.validate(dataServico);
+        const validation = schema.validate(dataServico);
+        const orderedFields = Object.keys(schema.describe().keys);
+        return { validation, orderedFields };
     }
 }
 
