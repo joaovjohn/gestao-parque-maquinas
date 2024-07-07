@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const motoristasController = require('./controllers/motoristasController');
+const motoristasController = require('./controllers/motoristaController');
 const pessoasController = require('./controllers/pessoasController');
 const marcaController = require('./controllers/marcaController');
 const localidadeController = require('./controllers/localidadeController');

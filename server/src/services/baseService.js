@@ -27,6 +27,13 @@ class BaseService {
 
     }
 
+    async getByField(field, value, fieldsToSelect = '*') {
+        if (fieldsToSelect !== '*') {
+            fieldsToSelect = fieldsToSelect.join(',');
+        }
+        return await db.query(`SELECT ${fieldsToSelect} FROM ${this.model.tableName} WHERE ${field} = $1`, [value]);
+    }
+
     async getByPrimaryKey(id, fieldsToSelect = '*') {
 
         if (fieldsToSelect !== '*') {

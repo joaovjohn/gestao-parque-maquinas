@@ -2,7 +2,7 @@ const v = require('joi');
 
 class Pessoa {
 
-    static DIPONIVEL = 1;
+    static DISPONIVEL = 1;
     static EM_SERVICO = 2;
     static INATIVO = 3;
 
