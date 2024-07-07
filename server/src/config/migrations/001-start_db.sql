@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS public.pessoa (
     cpf varchar(11) UNIQUE NOT NULL,
     status integer DEFAULT 1 NOT NULL, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - inativo)
     data_nasc date NULL,
-    email varchar(50) UNIQUE NOT NULL,
+    email varchar(50) UNIQUE NULL,
     senha varchar(100) NOT NULL,
     login varchar(50) UNIQUE NOT NULL,
     nome varchar(256) NOT NULL,
@@ -31,15 +31,14 @@ CONSTRAINT pk_pessoa PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.supervisor (
-    id serial NOT NULL,
     pessoa_id integer NOT NULL,
-    CONSTRAINT pk_supervisor PRIMARY KEY (id),
+    descricao varchar(256) NULL,
 CONSTRAINT fk_supervisor_pessoa FOREIGN KEY (pessoa_id) REFERENCES public.pessoa(id)
 );
 
 CREATE TABLE IF NOT EXISTS public.veiculo (
     id serial NOT NULL,
-    categoria varchar(50) NOT NULL,
+    categoria varchar(50) NOT NULL, -- trator, van, caminhao, etc
     placa varchar(7) NULL,
     status integer NOT NULL DEFAULT 1, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - em manutencao)
     nome varchar(256) NOT NULL,
