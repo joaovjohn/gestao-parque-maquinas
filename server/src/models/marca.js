@@ -19,6 +19,16 @@ class Marca {
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }
+
+    static validateUpdate(marca) {
+        const schema = v.object({
+            sigla: v.string().max(256),
+            nome: v.string().max(256)
+        });
+
+        const validation = schema.validate(marca,{ abortEarly: false });
+        return { validation };
+    }
 }
 
 module.exports = Marca;
