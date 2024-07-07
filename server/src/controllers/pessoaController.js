@@ -1,4 +1,5 @@
 const pessoaService = require('../services/pessoaService');
+const bcrypt = require('bcryptjs');   
 
 const index =  async (req, res) => {
   const fieldsToSelect = ['id' ,'status', 'data_nasc','email','login', 'nome'];
@@ -18,7 +19,6 @@ const show =  async (req, res) => {
     const pessoa = await pessoaService.getByPrimaryKey(req.params.id, fieldsToSelect);
     res.json({data: pessoa});
   } catch (err) {
-    console.log(err)
     res.status(500).json({ error: err.message });
   }
 };
@@ -26,8 +26,8 @@ const show =  async (req, res) => {
 const create = async (req,res) => {
   try {
     const pess = req.body;
+    pess.senha = await bcrypt.hash(pess.senha, 10);
     const newPessoa = await pessoaService.create(pess);
-
     res.status(201).json(newPessoa);
   } catch (err) {
     console.log(err)
