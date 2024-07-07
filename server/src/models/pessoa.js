@@ -29,7 +29,7 @@ class Pessoa {
             nome: v.string().max(256).required(),
         });
 
-        const validation = schema.validate(pessoa);
+        const validation = schema.validate(pessoa,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }

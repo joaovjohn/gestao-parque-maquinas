@@ -10,8 +10,9 @@ class BaseService {
 
         // faz a validacao dos campos do item
         const validate = this.model.validate(item);
-        if (validate.error) {
-            throw new Error(validate.details[0].message);
+        if (validate.validation.error) {
+            const errorMessages = validate.validation.error.details.map(detail => detail.message);
+            throw new Error(errorMessages.join(', '));
         }
         const fieldsToInsert = item;
         // pega os campos ordenados
