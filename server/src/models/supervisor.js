@@ -11,14 +11,23 @@ class Supervisor {
 
     static validate(supervisor) {
         const schema = v.object({
-            id: v.number().integer().required(),
             pessoa_id: v.number().integer().required(),
+            descricao: v.string().max(256)
         });
 
         const validation = schema.validate(supervisor,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
 
         return { validation, orderedFields };
+    }
+
+    static validateUpdate(supervisor) {
+        const schema = v.object({
+            descricao:v.string().max(256)
+        });
+
+        const validation = schema.validate(supervisor,{ abortEarly: false });
+        return { validation };
     }
 }
 

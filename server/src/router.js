@@ -8,6 +8,7 @@ const pessoaController = require('./controllers/pessoaController');
 const marcaController = require('./controllers/marcaController');
 const localidadeController = require('./controllers/localidadeController');
 const veiculoController = require('./controllers/veiculoController');
+const supervisorController = require('./controllers/supervisorController');
 
 authRouter.use(passport.authenticate('jwt', { session: false }));
 
@@ -53,5 +54,12 @@ authRouter.put('/veiculo/:id', veiculoController.update);
 authRouter.delete('/veiculo/:id', veiculoController.destroy);
 
 router.use('/', authRouter);
+
+// Rotas de Supervisor
+router.get('/supervisor', supervisorController.index);
+router.get('/supervisor/:id', supervisorController.show);
+router.post('/supervisor', supervisorController.create);
+router.put('/supervisor/:id', supervisorController.update);
+router.delete('/supervisor/:id', supervisorController.destroy);
 
 module.exports = router;

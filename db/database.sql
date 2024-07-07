@@ -31,9 +31,9 @@ CONSTRAINT pk_pessoa PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.supervisor (
-    pessoa_id integer NOT NULL,
+    pessoa_id integer NOT NULL UNIQUE,
     descricao varchar(256) NULL,
-CONSTRAINT fk_supervisor_pessoa FOREIGN KEY (pessoa_id) REFERENCES public.pessoa(id)
+    CONSTRAINT fk_supervisor_pessoa FOREIGN KEY (pessoa_id) REFERENCES public.pessoa(id)
 );
 
 CREATE TABLE IF NOT EXISTS public.veiculo (
@@ -49,7 +49,7 @@ CONSTRAINT fk_veiculo_marca FOREIGN KEY (id_marca) REFERENCES public.marca(id)
 );
 
 CREATE TABLE IF NOT EXISTS public.motorista (
-    pessoa_id integer NOT NULL,
+    pessoa_id integer NOT NULL UNIQUE,
     num_cnh varchar(11) NOT NULL,
     categoria_cnh varchar(2) NOT NULL,
 CONSTRAINT pk_motorista PRIMARY KEY (num_cnh),
@@ -64,14 +64,12 @@ CREATE TABLE IF NOT EXISTS public.servico (
     prioridade integer NOT NULL,
     dt_aprovacao timestamp,
     usuario_aprovacao integer,
-    supervisor_id integer,
     localidade_id integer NOT NULL,
     solicitante_id integer NOT NULL,
 CONSTRAINT pk_servico PRIMARY KEY (id),
-CONSTRAINT fk_servico_supervisor FOREIGN KEY (supervisor_id) REFERENCES public.supervisor(id),
 CONSTRAINT fk_servico_localidade FOREIGN KEY (localidade_id) REFERENCES public.localidade(id),
 CONSTRAINT fk_servico_solicitante FOREIGN KEY (solicitante_id) REFERENCES public.pessoa(id),
-CONSTRAINT fk_servico_usuario_aprovacao FOREIGN KEY (usuario_aprovacao) REFERENCES public.supervisor(id)
+CONSTRAINT fk_servico_usuario_aprovacao FOREIGN KEY (usuario_aprovacao) REFERENCES public.supervisor(pessoa_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.veiculo_servico (
@@ -97,9 +95,9 @@ CONSTRAINT fk_data_servico FOREIGN KEY (id_servico) REFERENCES public.servico(id
 
 CREATE TABLE IF NOT EXISTS public.motorista_servico (
     id serial NOT NULL,
-    motorista_cnh varchar(11),
+    motorista_id integer NOT NULL,
     servico_id integer NOT NULL,
 CONSTRAINT pk_motorista_servico PRIMARY KEY (id),
-CONSTRAINT fk_motorista_servico_motorista FOREIGN KEY (motorista_cnh) REFERENCES public.motorista(num_cnh),
+CONSTRAINT fk_motorista_servico_motorista FOREIGN KEY (motorista_id) REFERENCES public.motorista(pessoa_id),
 CONSTRAINT fk_motorista_servico_servico FOREIGN KEY (servico_id) REFERENCES public.servico(id)
 );
