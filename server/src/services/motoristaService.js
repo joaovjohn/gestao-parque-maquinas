@@ -29,10 +29,11 @@ class MotoristaService extends BaseService{
     }
 
     async update(id, mot) {
-        const validate = this.model.validate(motoristaModel);
-        if (validate.error) {
-            console.log(validate.details);
-            throw new Error(validate.details[0].message);
+
+        const validate = motoristaModel.validateUpdate(mot);
+        if (validate.validation.error) {
+            const errorMessages = validate.validation.error.details.map(detail => detail.message);
+            throw new Error(errorMessages.join(', '));
         }
 
         const fieldsToUpdate = mot;

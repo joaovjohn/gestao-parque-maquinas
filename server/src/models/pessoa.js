@@ -23,7 +23,7 @@ class Pessoa {
         const schema = v.object({
             cpf: v.string().length(11).required(),
             data_nasc: v.date().allow(null),
-            email: v.string().email().max(50).allow(null),
+            email: v.string().email().max(50).allow(null, ''),
             senha: v.string().min(8).max(100).required(),
             login: v.string().max(50).required(),
             nome: v.string().max(256).required(),
