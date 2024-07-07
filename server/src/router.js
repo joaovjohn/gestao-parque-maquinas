@@ -5,6 +5,7 @@ const pessoaController = require('./controllers/pessoaController');
 const marcaController = require('./controllers/marcaController');
 const localidadeController = require('./controllers/localidadeController');
 const veiculoController = require('./controllers/veiculoController');
+const supervisorController = require('./controllers/supervisorController');
 
 router.get('/status', (req, res) => {
     res.status(200).send({ status: 'ok' });
@@ -44,5 +45,12 @@ router.get('/veiculo/:id', veiculoController.show);
 router.post('/veiculo', veiculoController.create);
 router.put('/veiculo/:id', veiculoController.update);
 router.delete('/veiculo/:id', veiculoController.destroy);
+
+// Rotas de Supervisor
+router.get('/supervisor', supervisorController.index);
+router.get('/supervisor/:id', supervisorController.show);
+router.post('/supervisor', supervisorController.create);
+router.put('/supervisor/:id', supervisorController.update);
+router.delete('/supervisor/:id', supervisorController.destroy);
 
 module.exports = router;
