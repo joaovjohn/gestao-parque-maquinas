@@ -17,7 +17,7 @@ class Motorista {
             categoria_cnh: v.string().length(2).required(),
         });
 
-        const validation = schema.validate(motorista);
+        const validation = schema.validate(motorista,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }

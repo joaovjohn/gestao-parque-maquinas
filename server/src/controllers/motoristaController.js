@@ -51,7 +51,7 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
     try {
-        await motoristaService.deleteMotorista(req.params.id)
+        await motoristaService.delete(req.params.id)
         return res.status(201).json({message: 'Motorista removido com sucesso'});
     } catch (err) {
         return res.status(500).json({ error: err.message });

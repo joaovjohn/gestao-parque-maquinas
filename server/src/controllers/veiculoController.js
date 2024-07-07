@@ -2,12 +2,10 @@ const veiculoService = require('../services/veiculoService');
 const marcaService = require('../services/marcaService');
 
 const index =  async (req, res) => {
-  const fieldsToSelect = ['placa', 'nome', 'categoria', 'tipo_uso', 'id_marca', 'status'];
 
   try {
-    const veiculo = await veiculoService.getAll(fieldsToSelect);
-    const marca = await marcaService.getByField('id', veiculo.id_marca, 'nome');
-    veiculo.id_marca = marca.nome;
+    const veiculo = await veiculoService.getVeiculo();
+
 
     res.json({data: veiculo});
   } catch (err) {
@@ -16,10 +14,9 @@ const index =  async (req, res) => {
 };
 
 const show =  async (req, res) => {
-  const fieldsToSelect = ['placa', 'nome', 'categoria', 'tipo_uso', 'id_marca', 'status'];
 
   try {
-    const veiculo = await veiculoService.getByPrimaryKey(req.params.id, fieldsToSelect);
+    const veiculo = await veiculoService.getVeiculo(req.params.id);
     res.json({data: veiculo});
   } catch (err) {
     console.log(err)

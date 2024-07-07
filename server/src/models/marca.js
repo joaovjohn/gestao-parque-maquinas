@@ -15,7 +15,7 @@ class Marca {
             nome: v.string().max(256).required(),
         });
 
-        const validation = schema.validate(marca);
+        const validation = schema.validate(marca,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }

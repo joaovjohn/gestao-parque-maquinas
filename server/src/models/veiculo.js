@@ -25,13 +25,13 @@ class Veiculo {
     static validate(veiculo) {
         const schema = v.object({
             categoria: v.string().max(50).required(),
-            placa: v.string().length(7).allow(null),
+            placa: v.string().length(7).allow('', null).optional(),
             nome: v.string().max(256).required(),
             tipo_uso: v.number().integer().required(),
             id_marca: v.number().integer().required(),
         });
 
-        const validation = schema.validate(veiculo);
+        const validation = schema.validate(veiculo,{ abortEarly: false });
         const orderedFields = Object.keys(schema.describe().keys);
 
         return { validation, orderedFields };
