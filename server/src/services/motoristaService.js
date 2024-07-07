@@ -10,7 +10,7 @@ class MotoristaService extends BaseService{
         super(motoristaModel);
     }
 
-    async getAllMotoristas() {
+    async getMotorista(id = null) {
         const sql = `
             SELECT 
                 p.id, 
@@ -21,7 +21,34 @@ class MotoristaService extends BaseService{
             LEFT JOIN pessoa p ON m.pessoa_id = p.id
         `;
 
+        if (id) {
+            return await db.query(sql + ' WHERE m.pessoa_id = $1', [id]);
+        }
+
         return await db.query(sql);
+    }
+
+    async update(id, mot) {
+        const validate = this.model.validate(motoristaModel);
+        if (validate.error) {
+            console.log(validate.details);
+            throw new Error(validate.details[0].message);
+        }
+
+        const fieldsToUpdate = mot;
+        const paramsUpdateKey = Object.keys(fieldsToUpdate)
+        const paramsUpdateValues = Object.values(fieldsToUpdate)
+        const paramsUpdateCachorada = paramsUpdateKey.map((_, i) => `${paramsUpdateKey[i]} = $${i + 1}`).join(',');
+
+        return await db.query(`UPDATE motorista SET ${paramsUpdateCachorada} WHERE pessoa_id = ${id} RETURNING *`, paramsUpdateValues);
+    }
+
+    async delete(id) {
+        const sql = `
+            DELETE FROM motorista WHERE pessoa_id = $1
+        `;
+
+        return await db.query(sql, [id]);
     }
 
     async validacoesMotorista(mot) {
@@ -42,9 +69,6 @@ class MotoristaService extends BaseService{
             return {status: 409, json: {error: 'CNH já cadastrada'}};
         }
     }
-
-
 }
-
 
 module.exports = new MotoristaService();
