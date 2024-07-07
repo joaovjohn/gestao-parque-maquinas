@@ -21,6 +21,16 @@ class Motorista {
         const orderedFields = Object.keys(schema.describe().keys);
         return { validation, orderedFields };
     }
+
+    static validateUpdate(motorista) {
+        const schema = v.object({
+            num_cnh: v.string().length(11),
+            categoria_cnh: v.string().length(2),
+        });
+
+        const validation = schema.validate(motorista,{ abortEarly: false });
+        return { validation };
+    }
 }
 
 module.exports = Motorista;
