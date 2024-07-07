@@ -53,13 +53,13 @@ authRouter.post('/veiculo', veiculoController.create);
 authRouter.put('/veiculo/:id', veiculoController.update);
 authRouter.delete('/veiculo/:id', veiculoController.destroy);
 
-router.use('/', authRouter);
-
 // Rotas de Supervisor
-router.get('/supervisor', supervisorController.index);
-router.get('/supervisor/:id', supervisorController.show);
-router.post('/supervisor', supervisorController.create);
-router.put('/supervisor/:id', supervisorController.update);
-router.delete('/supervisor/:id', supervisorController.destroy);
+authRouter.get('/supervisor', supervisorController.index);
+authRouter.get('/supervisor/:id', supervisorController.show);
+authRouter.post('/supervisor', supervisorController.create);
+authRouter.put('/supervisor/:id', supervisorController.update);
+authRouter.delete('/supervisor/:id', supervisorController.destroy);
+
+router.use('/', authRouter);
 
 module.exports = router;

@@ -28,7 +28,7 @@ const create = async (req, res) => {
         const marca = req.body;
         const newMarca = await marcaService.create(marca);
 
-        res.status(201).json(newMarca);
+        return res.status(201).json({ message: 'Marca criada com sucesso' });
     } catch (err) {
         console.log(err)
         res.status(500).json({ error: err.message });
@@ -39,7 +39,7 @@ const update = async (req, res) => {
     try {
         const marca = req.body;
         const updatedMarca = await marcaService.update(req.params.id, marca);
-        res.status(201).json(updatedMarca);
+        return res.status(201).json({ message: 'Marca atualizada com sucesso' });
     } catch (err) {
         console.log(err)
         res.status(500).json({ error: err.message });

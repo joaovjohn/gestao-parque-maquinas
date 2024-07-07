@@ -28,7 +28,7 @@ const create = async (req,res) => {
     const pess = req.body;
     pess.senha = await bcrypt.hash(pess.senha, 10);
     const newPessoa = await pessoaService.create(pess);
-    res.status(201).json(newPessoa);
+    res.status(201).json({message: 'Pessoa criada com sucesso'});
   } catch (err) {
     console.log(err)
     res.status(500).json({ error: err.message });
@@ -39,7 +39,7 @@ const update = async (req,res) => {
   try {
     const pess = req.body;
     const pessoa = await pessoaService.update(req.params.id,pess);
-    res.status(201).json(pessoa);
+    res.status(201).json({message: 'Pessoa atualizada com sucesso'});
   } catch (err) {
     console.log(err)
     res.status(500).json({ error: err.message });
