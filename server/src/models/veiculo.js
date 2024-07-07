@@ -1,9 +1,14 @@
 const v = require('joi');
 
 class Veiculo {
+    // status
     static DISPONIVEL = 1;
     static EM_SERVICO = 2;
     static EM_MANUTENCAO = 3;
+
+    // tipo_uso
+    static VEICULO = 1;
+    static MAQUINA = 2;
 
     static tableName = 'veiculo';
 
@@ -21,7 +26,6 @@ class Veiculo {
         const schema = v.object({
             categoria: v.string().max(50).required(),
             placa: v.string().length(7).allow(null),
-            status: v.number().integer(),
             nome: v.string().max(256).required(),
             tipo_uso: v.number().integer().required(),
             id_marca: v.number().integer().required(),

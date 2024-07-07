@@ -11,7 +11,6 @@ class BaseService {
         // faz a validacao dos campos do item
         const validate = this.model.validate(item);
         if (validate.error) {
-            console.log(validate.details);
             throw new Error(validate.details[0].message);
         }
         const fieldsToInsert = item;
@@ -27,11 +26,11 @@ class BaseService {
 
     }
 
-    async getByField(field, value, fieldsToSelect = '*') {
+    async getByField(whereField, whereValue, fieldsToSelect = '*') {
         if (fieldsToSelect !== '*') {
             fieldsToSelect = fieldsToSelect.join(',');
         }
-        return await db.query(`SELECT ${fieldsToSelect} FROM ${this.model.tableName} WHERE ${field} = $1`, [value]);
+        return await db.query(`SELECT ${fieldsToSelect} FROM ${this.model.tableName} WHERE ${whereField} = $1`, [whereValue]);
     }
 
     async getByPrimaryKey(id, fieldsToSelect = '*') {
