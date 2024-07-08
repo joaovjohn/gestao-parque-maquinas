@@ -55,6 +55,7 @@ authRouter.post('/veiculo', veiculoController.create);
 authRouter.put('/veiculo/:id', veiculoController.update);
 authRouter.delete('/veiculo/:id', veiculoController.destroy);
 authRouter.get('/veiculos-disponiveis', veiculoController.availableVehicles);
+authRouter.get('/veiculos-servico', veiculoController.vehiclesOnDuty)
 
 // Rotas de Supervisor
 authRouter.get('/supervisor', supervisorController.index);
