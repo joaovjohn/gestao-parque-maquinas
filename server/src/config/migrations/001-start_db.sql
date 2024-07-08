@@ -39,11 +39,11 @@ CREATE TABLE IF NOT EXISTS public.supervisor (
 CREATE TABLE IF NOT EXISTS public.veiculo (
     id serial NOT NULL,
     categoria varchar(50) NOT NULL, -- trator, van, caminhao, etc
-    placa varchar(7) NULL,
+    placa varchar(7) NULL UNIQUE,
     status integer NOT NULL DEFAULT 1, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - em manutencao)
     nome varchar(256) NOT NULL,
-    tipo_uso integer NOT NULL, -- flag para uso de tempo/quilometragem (1 - veiculo, 2 - maquina)
     id_marca integer NOT NULL,
+    ano_fabricacao integer NULL,
 CONSTRAINT pk_veiculo PRIMARY KEY (id),
 CONSTRAINT fk_veiculo_marca FOREIGN KEY (id_marca) REFERENCES public.marca(id)
 );
@@ -58,46 +58,17 @@ CONSTRAINT fk_motorista_pessoa FOREIGN KEY (pessoa_id) REFERENCES public.pessoa(
 
 CREATE TABLE IF NOT EXISTS public.servico (
     id serial NOT NULL,
-    status integer NOT NULL, -- flag para tratar na aplicacao
+    status integer NOT NULL DEFAULT 1, -- flag para tratar na aplicacao (1 - aguardando execucao, 2 - em andamento, 3 - concluido)
     dt_solicita timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     descricao varchar (200) NOT NULL,
-    prioridade integer NOT NULL,
-    dt_aprovacao timestamp,
-    usuario_aprovacao integer,
+    prioridade integer NOT NULL, -- flag (1 - alta, 2 - media, 3 - baixa)
     localidade_id integer NOT NULL,
-    solicitante_id integer NOT NULL,
+    motorista_id INTEGER NOT NULL,
+    veiculo_id INTEGER NOT NULL,
+    dt_inicio timestamp NULL,
+    dt_final timestamp NULL,
 CONSTRAINT pk_servico PRIMARY KEY (id),
 CONSTRAINT fk_servico_localidade FOREIGN KEY (localidade_id) REFERENCES public.localidade(id),
-CONSTRAINT fk_servico_solicitante FOREIGN KEY (solicitante_id) REFERENCES public.pessoa(id),
-CONSTRAINT fk_servico_usuario_aprovacao FOREIGN KEY (usuario_aprovacao) REFERENCES public.supervisor(pessoa_id)
-);
-
-CREATE TABLE IF NOT EXISTS public.veiculo_servico (
-    id serial NOT NULL,
-    veiculo_id integer NOT NULL,
-    servico_id integer NOT NULL,
-    tempo integer, -- tempo é utilizado para máquinas
-    distancia integer, -- distancia é utilizado para veiculos (km)
-CONSTRAINT pk_veiculo_servico PRIMARY KEY (id),
-CONSTRAINT fk_veiculo_servico_veiculo FOREIGN KEY (veiculo_id) REFERENCES public.veiculo(id),
-CONSTRAINT fk_veiculo_servico_servico FOREIGN KEY (servico_id) REFERENCES public.servico(id)
-);
-
-CREATE TABLE IF NOT EXISTS public.data_servico (
-    id serial NOT NULL,
-    id_servico integer NOT NULL,
-    dt_cadastro timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    dt_inicio timestamp,
-    dt_final timestamp,
-CONSTRAINT pk_data_servico PRIMARY KEY (id),
-CONSTRAINT fk_data_servico FOREIGN KEY (id_servico) REFERENCES public.servico(id)
-);
-
-CREATE TABLE IF NOT EXISTS public.motorista_servico (
-    id serial NOT NULL,
-    motorista_id integer NOT NULL,
-    servico_id integer NOT NULL,
-CONSTRAINT pk_motorista_servico PRIMARY KEY (id),
-CONSTRAINT fk_motorista_servico_motorista FOREIGN KEY (motorista_id) REFERENCES public.motorista(pessoa_id),
-CONSTRAINT fk_motorista_servico_servico FOREIGN KEY (servico_id) REFERENCES public.servico(id)
+CONSTRAINT fk_servico_motorista FOREIGN KEY (motorista_id) REFERENCES public.motorista(pessoa_id),
+CONSTRAINT fk_servico_veiculo FOREIGN KEY (veiculo_id) REFERENCES public.veiculo(id)
 );

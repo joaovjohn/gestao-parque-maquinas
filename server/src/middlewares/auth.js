@@ -15,7 +15,7 @@ async function login(req, res) {
         const token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' });
         res.json({ message: 'Login successful', token });
     } else {
-        res.status(401).json({ message: 'usuario ou senha invalidos' });
+        res.status(401).json({ message: 'Usuario ou Senha inválidos' });
     }
 }
 

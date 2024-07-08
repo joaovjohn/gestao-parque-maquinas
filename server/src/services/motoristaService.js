@@ -3,6 +3,7 @@ const BaseService = require('./baseService');
 const motoristaModel = require('../models/motorista');
 const { db } = require('../config/connection');
 const pessoaService = require("./pessoaService");
+const pessoaModel = require('../models/pessoa');
 
 class MotoristaService extends BaseService{
     // cria os métodos de CRUD
@@ -50,6 +51,26 @@ class MotoristaService extends BaseService{
         `;
 
         return await db.query(sql, [id]);
+    }
+
+    async motoristaDisponivel(id = null) {
+
+        const sql = `
+            SELECT 
+                p.id, 
+                p.nome,
+                m.num_cnh,
+                m.categoria_cnh
+            FROM motorista m
+            LEFT JOIN pessoa p ON m.pessoa_id = p.id
+            WHERE p.status = ${pessoaModel.DISPONIVEL}
+        `;
+
+        if (id) {
+            return await db.query(sql + ' AND m.pessoa_id = $1', [id]);
+        }
+
+        return await db.query(sql);
     }
 
     async validacoesMotorista(mot) {
