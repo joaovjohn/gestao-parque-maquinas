@@ -1,8 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/authContext';
 import { TextField, Button, Container, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export function Login() {
+  const navigate = useNavigate();
+
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const { signIn } = useContext(AuthContext);
@@ -10,7 +13,7 @@ export function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await signIn(login, password);
+      await signIn(login, password,navigate);
     } catch (error) {
       console.log('Erro:', error);
     }
