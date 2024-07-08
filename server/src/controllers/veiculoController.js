@@ -1,5 +1,4 @@
 const veiculoService = require('../services/veiculoService');
-const marcaService = require('../services/marcaService');
 
 const index =  async (req, res) => {
 
@@ -27,8 +26,8 @@ const show =  async (req, res) => {
 const create = async (req,res) => {
   try {
     const veic = req.body;
-    const newVeiculo = await veiculoService.create(veic);
-    return res.status(201).json({message: 'Veiculo criado com sucesso'});
+    const response = await veiculoService.createVeiculo(veic);
+    res.status(response.status).json(response.json);
 
   } catch (err) {
     console.log(err)
@@ -39,7 +38,7 @@ const create = async (req,res) => {
 const update = async (req,res) => {
   try {
     const veic = req.body;
-    const updatedVeiculo = await veiculoService.update(req.params.id, veic);
+    await veiculoService.update(req.params.id, veic);
     return res.status(201).json({message: 'Veiculo alterado com sucesso'});
   } catch (err) {
     res.status(500).json({ error: err.message });
