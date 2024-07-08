@@ -10,8 +10,6 @@ export function Login() {
     event.preventDefault();
     try {
       await signIn(login, password);
-      console.log('Login:', login);
-      console.log('Senha:', password);
     } catch (error) {
       console.log('Erro:', error);
     }
