@@ -32,6 +32,7 @@ authRouter.post('/motorista', motoristaController.create);
 authRouter.put('/motorista/:id', motoristaController.update);
 authRouter.delete('/motorista/:id', motoristaController.destroy);
 authRouter.get('/motoristas-disponiveis', motoristaController.availableDrivers);
+authRouter.get('/motoristas-servico', motoristaController.driversOnDuty);
 
 // Rotas de Marcas
 authRouter.get('/marca', marcaController.index);

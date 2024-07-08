@@ -15,7 +15,7 @@ class ServicoService extends BaseService{
         super(servicoModel);
     }
 
-    async create(servico) {
+    async createServico(servico) {
         const validate = this.model.validate(servicoModel);
         if (validate.validation.error) {
             const errorMessages = validate.validation.error.details.map(detail => detail.message);
@@ -27,15 +27,7 @@ class ServicoService extends BaseService{
             return erro;
         }
 
-        const sql = `
-            INSERT INTO servico (status, dt_solicita, descricao, prioridade, localidade_id, motorista_id, veiculo_id)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING *
-        `;
-        const { descricao, prioridade, localidade_id, motorista_id, veiculo_id } = servico;
-        const values = [servicoModel.AGUARDANDO_EXECUCAO, new Date(), descricao, prioridade, localidade_id, motorista_id, veiculo_id];
-        await db.query(sql, values);
-
+        await this.create(servico);
         return {status: 201, json: {message: 'Serviço criado com sucesso'}};
     }
 
