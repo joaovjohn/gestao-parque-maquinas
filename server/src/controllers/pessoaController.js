@@ -2,7 +2,7 @@ const pessoaService = require('../services/pessoaService');
 const bcrypt = require('bcryptjs');   
 
 const index =  async (req, res) => {
-  const fieldsToSelect = ['id' ,'status', 'data_nasc','email','login', 'nome'];
+  const fieldsToSelect = ['id' ,'status', 'cpf',  'data_nasc','email','login', 'nome'];
 
   try {
     const pessoas = await pessoaService.getAll(fieldsToSelect);
@@ -13,7 +13,7 @@ const index =  async (req, res) => {
 };
 
 const show =  async (req, res) => {
-  const fieldsToSelect = ['id' ,'status', 'data_nasc','email','login', 'nome'];
+  const fieldsToSelect = ['id' ,'status', 'cpf', 'data_nasc','email','login', 'nome'];
 
   try {
     const pessoa = await pessoaService.getByPrimaryKey(req.params.id, fieldsToSelect);
