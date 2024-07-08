@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { api } from "../api/api";
+import { Navigate } from "react-router-dom";
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -15,18 +16,15 @@ export const AuthProvider = ({ children }) => {
 
   const signIn = async (login, senha) => {
     try {
-      const response = await api.post('/api/login', {
+      const response = await api.post('/login', {
         login,
         senha,
       });
-      console.log('Token:', response);
-      console.log('Token:', response.data.token);
-  
       const { token } = await response.data;
   
       localStorage.setItem("@token:user", `"${token}"`); 
-      console.log('Token:', token);
       setLogged(true);
+      Navigate('/');
     } catch (error) {
       console.error(error);
     }
@@ -36,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("@token:user");
     setLogged(false);
     setUser(null);
+    Navigate('/login');
   };
 
   return (

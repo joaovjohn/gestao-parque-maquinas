@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Menu from '../../components/Menu';
+import { AuthContext } from '../../contexts/authContext'; 
 
 export function Motorista() {
   const [name, setName] = useState('');
@@ -12,18 +14,14 @@ export function Motorista() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (password!== confirmPassword) {
-      setError('Senhas não conferem');
-    } else {
-      setError(null);
-      // Aqui você pode fazer a requisição para o backend
-      console.log('Cadastro realizado com sucesso!');
-    }
   };
 
   return (
+    
     <div className="App">
       <h1>Cadastro</h1>
+      <Menu /> 
+
       <form onSubmit={handleSubmit}>
         <label>
           Nome:
