@@ -1,5 +1,5 @@
 const motoristaService = require('../services/motoristaService');
-
+const pessoaModel = require('../models/pessoa');
 const index =  async (req, res) => {
 
   try {
@@ -60,7 +60,16 @@ const destroy = async (req, res) => {
 
 const availableDrivers = async (req, res) => {
     try {
-        const motoristas = await motoristaService.motoristaDisponivel();
+        const motoristas = await motoristaService.getMotoristaByStatus(pessoaModel.DISPONIVEL);
+        res.json({data: motoristas});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+// motoristas em servico
+const driversOnDuty = async (req, res) => {
+    try {
+        const motoristas = await motoristaService.getMotoristaByStatus(pessoaModel.EM_SERVICO);
         res.json({data: motoristas});
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -73,5 +82,6 @@ module.exports = {
     create,
     update,
     destroy,
-    availableDrivers
+    availableDrivers,
+    driversOnDuty
 };
