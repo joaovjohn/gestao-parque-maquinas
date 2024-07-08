@@ -26,7 +26,7 @@ const create = async (req, res) => {
         if (erro) {
             return res.status(erro.status).json(erro.json);
         }
-        const newSupervisor = await supervisorService.create(supervisor);
+        await supervisorService.create(supervisor);
         return res.status(201).json({ message: 'Supervisor criado com sucesso' });
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -36,7 +36,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         const supervisor = req.body;
-        const updatedSupervisor = await supervisorService.update(req.params.id, supervisor);
+        await supervisorService.update(req.params.id, supervisor);
         return res.status(201).json({ message: 'Supervisor alterado com sucesso' });
     } catch (error) {
         return res.status(500).json({ error: error.message });

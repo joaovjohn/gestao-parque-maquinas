@@ -28,9 +28,7 @@ const create = async (req,res) => {
 
     try {
         const loc = req.body;
-        console.log(loc);
-        const newLocalidade = await localidadeService.create(loc);
-
+        await localidadeService.create(loc);
         return res.status(201).json({ message: 'Localidade criada com sucesso' });
     } catch (err) {
         console.log(err)
@@ -41,7 +39,7 @@ const create = async (req,res) => {
 const update = async (req,res) => {
     try {
         const loc = req.body;
-        const localidade = await localidadeService.update(req.params.id, loc);
+        await localidadeService.update(req.params.id, loc);
         return res.status(201).json({ message: 'Localidade atualizada com sucesso' });
     } catch (err) {
         console.log(err)
