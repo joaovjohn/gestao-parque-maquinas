@@ -13,23 +13,20 @@ export const AuthProvider = ({ children }) => {
     return !!isLogged;
   });
 
-  const signIn = async (login, password) => {
+  const signIn = async (login, senha) => {
     try {
       const response = await api.post('/api/login', {
         login,
-        password,
+        senha,
       });
-      console.log(response);
+      console.log('Token:', response);
+      console.log('Token:', response.data.token);
   
-      if (!response.ok) {
-        throw new Error('Falha na autenticação');
-      }
+      const { token } = await response.data;
   
-      const { token } = await response.json();
-  
-      localStorage.setItem("@token:user", token); 
+      localStorage.setItem("@token:user", `"${token}"`); 
+      console.log('Token:', token);
       setLogged(true);
-      setUser(user); 
     } catch (error) {
       console.error(error);
     }
