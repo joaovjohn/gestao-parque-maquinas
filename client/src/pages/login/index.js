@@ -1,7 +1,9 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../contexts/authContext';
-import { TextField, Button, Container, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+
+import React, { useState,useContext } from 'react';
+import { AuthContext } from '../../contexts/authContext'; // Ajuste o caminho conforme necessário
+import "./Login.css";
+import Logo from '../../assets/logo.gif';
+
 
 export function Login() {
   const navigate = useNavigate();
@@ -20,21 +22,22 @@ export function Login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <form onSubmit={handleSubmit} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
+
+    <div className="container">
+      <img src="" alt="" className="" />
+      <form onSubmit={handleSubmit}>
+        
+        <header>
+          <img src={ Logo } alt="Logo da Prefeitura de São José do Inhacora/RS." className='Logo'/>
+          <h1>Gestão de Parque de Máquinas</h1>
+        </header>
+
+        <div className="form-group">
+          <label htmlFor="login">Usuário:</label>
+          <input
+            type="text"
+            placeholder="login.login"
+
             id="login"
             label="Usuário"
             name="login"
@@ -43,29 +46,26 @@ export function Login() {
             value={login}
             onChange={(e) => setLogin(e.target.value)}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Senha"
+
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Senha:</label>
+          <input
+
             type="password"
+            placeholder='*********'
             id="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Entrar
-          </Button>
-        </form>
-      </Box>
-    </Container>
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Entrar
+        </button>
+      </form>
+    </div>
+
   );
 }
