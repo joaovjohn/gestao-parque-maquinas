@@ -16,7 +16,7 @@ class VeiculoService extends BaseService{
                 v.placa, 
                 v.status, 
                 v.nome, 
-                v.tipo_uso, 
+                v.ano_fabricacao, 
                 m.nome as marca
             FROM veiculo v
             LEFT JOIN marca m ON v.id_marca = m.id
@@ -27,6 +27,25 @@ class VeiculoService extends BaseService{
         }
 
         return await db.query(sql);
+    }
+
+    async veiculoDisponivel(id = null) {
+
+        const sql = `
+            SELECT 
+                v.id, 
+                v.categoria, 
+                v.placa, 
+                v.status, 
+                v.nome, 
+                v_ano_fabricacao,
+                m.nome as marca
+            FROM veiculo v
+            LEFT JOIN marca m ON v.id_marca = m.id
+            WHERE v.id = $1 AND v.status = ${veiculoModel.DISPONIVEL}
+        `;
+
+        return await db.query(sql, [id]);
     }
 }
 

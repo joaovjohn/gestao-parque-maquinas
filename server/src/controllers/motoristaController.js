@@ -28,7 +28,7 @@ const create = async (req,res) => {
             return res.status(erro.status).json(erro.json);
         }
 
-        const newMotorista = await motoristaService.create(mot);
+        await motoristaService.create(mot);
         return res.status(201).json({ message: 'Motorista criado com sucesso' });
 
     } catch (err) {
@@ -58,10 +58,20 @@ const destroy = async (req, res) => {
     }
 };
 
+const availableDrivers = async (req, res) => {
+    try {
+        const motoristas = await motoristaService.motoristaDisponivel();
+        res.json({data: motoristas});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports = {
     index,
     show,
     create,
     update,
     destroy,
+    availableDrivers
 };

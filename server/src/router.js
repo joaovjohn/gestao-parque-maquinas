@@ -31,6 +31,7 @@ authRouter.get('/motorista/:id', motoristaController.show);
 authRouter.post('/motorista', motoristaController.create);
 authRouter.put('/motorista/:id', motoristaController.update);
 authRouter.delete('/motorista/:id', motoristaController.destroy);
+authRouter.get('/motoristas-disponiveis', motoristaController.availableDrivers);
 
 // Rotas de Marcas
 authRouter.get('/marca', marcaController.index);
@@ -52,6 +53,7 @@ authRouter.get('/veiculo/:id', veiculoController.show);
 authRouter.post('/veiculo', veiculoController.create);
 authRouter.put('/veiculo/:id', veiculoController.update);
 authRouter.delete('/veiculo/:id', veiculoController.destroy);
+authRouter.get('/veiculos-disponiveis', veiculoController.availableVehicles);
 
 // Rotas de Supervisor
 authRouter.get('/supervisor', supervisorController.index);

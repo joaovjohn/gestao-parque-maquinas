@@ -55,10 +55,20 @@ const destroy = async (req,res) => {
   }
 };
 
+const availableVehicles = async (req, res) => {
+    try {
+        const veiculos = await veiculoService.veiculoDisponivel();
+        res.json({data: veiculos});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports = {
     create,
     index, 
     show,
     update,
-    destroy
+    destroy,
+    availableVehicles
 };
