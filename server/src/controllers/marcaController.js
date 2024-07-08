@@ -1,7 +1,7 @@
 const marcaService = require('../services/marcaService');
 
 const index = async (req, res) => {
-    const fieldsToSelect = ['id', 'nome'];
+    const fieldsToSelect = ['id', 'sigla', 'nome'];
 
     try {
         const marcas = await marcaService.getAll(fieldsToSelect);
@@ -12,7 +12,7 @@ const index = async (req, res) => {
 };
 
 const show = async (req, res) => {
-    const fieldsToSelect = ['id', 'nome'];
+    const fieldsToSelect = ['id', 'sigla', 'nome'];
 
     try {
         const marca = await marcaService.getByPrimaryKey(req.params.id, fieldsToSelect);

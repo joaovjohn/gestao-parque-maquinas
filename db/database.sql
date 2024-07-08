@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS public.supervisor (
 CREATE TABLE IF NOT EXISTS public.veiculo (
     id serial NOT NULL,
     categoria varchar(50) NOT NULL, -- trator, van, caminhao, etc
-    placa varchar(7) NULL,
+    placa varchar(7) NULL UNIQUE,
     status integer NOT NULL DEFAULT 1, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - em manutencao)
     nome varchar(256) NOT NULL,
     tipo_uso integer NOT NULL, -- flag para uso de tempo/quilometragem (1 - veiculo, 2 - maquina)
