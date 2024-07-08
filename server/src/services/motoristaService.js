@@ -52,6 +52,25 @@ class MotoristaService extends BaseService{
         return await db.query(sql, [id]);
     }
 
+    async getMotoristaByStatus(status, id = null) {
+        const sql = `
+            SELECT 
+                p.id, 
+                p.nome,
+                m.num_cnh,
+                m.categoria_cnh
+            FROM motorista m
+            LEFT JOIN pessoa p ON m.pessoa_id = p.id
+            WHERE p.status = $1
+        `;
+
+        if (id) {
+            return await db.query(sql + ' AND m.pessoa_id = $2', [status, id]);
+        }
+
+        return await db.query(sql, [status]);
+    }
+
     async validacoesMotorista(mot) {
         const id = mot.pessoa_id;
         const pessoa = await pessoaService.getByPrimaryKey(id);

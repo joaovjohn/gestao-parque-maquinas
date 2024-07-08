@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS public.veiculo (
     status integer NOT NULL DEFAULT 1, -- flag para tratar na aplicacao (1 - disponivel, 2 - em servico, 3 - em manutencao)
     nome varchar(256) NOT NULL,
     id_marca integer NOT NULL,
+    ano_fabricacao integer NULL,
 CONSTRAINT pk_veiculo PRIMARY KEY (id),
 CONSTRAINT fk_veiculo_marca FOREIGN KEY (id_marca) REFERENCES public.marca(id)
 );

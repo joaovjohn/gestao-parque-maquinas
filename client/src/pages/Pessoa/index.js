@@ -1,72 +1,110 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import Menu from '../../components/Menu';
+import { CustomTable } from '../../components/CustomTable';
+import { api } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
+import { Grid,Button,Typography,Box ,Drawer} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PersonIcon from '@mui/icons-material/Person';
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import { useTranslation } from 'react-i18next';
+import { PessoaCadastro } from './cadastro';
+
+const drawerWidth = 240; 
+
+const Container = styled(Grid)(({ theme }) => ({
+  padding: theme.spacing(2),
+}));
+
+const Content = styled('main')(({ theme }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  marginLeft: drawerWidth,
+  width: `calc(100% - ${drawerWidth}px)`,
+}));
+
 
 export function Pessoa() {
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [cnh, setCnh] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [pessoa,setPessoa] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (password!== confirmPassword) {
-      setError('Senhas não conferem');
-    } else {
-      setError(null);
-      // Aqui você pode fazer a requisição para o backend
-      console.log('Cadastro realizado com sucesso!');
+  const columns = [
+    { id: 'id', label: 'ID' },
+    { id: 'nome', label: 'Nome' },
+    { id: 'cpf', label: 'CPF' },
+    { id: 'email', label: 'Email' },
+    { id: 'data_nasc', label: 'Data de Nascimento' },
+  ];
+
+  const toggleDrawer = (open) => () => {
+    setIsDrawerOpen(open);
+  }
+  const getPessoa = async () => {
+    try {
+      const token = localStorage.getItem('@token:user').replace(/['"]+/g, '');
+      console.log('Token:', token);
+      const res = await api.get('/pessoa',{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setPessoa(res.data.data);
+    } catch (error) {
+      console.error(error);
+      setError('Houve um erro ao buscar a pessoa');
     }
   };
 
+  useEffect(() => {
+    getPessoa();
+  }, []);
+
+  const handleEdit = (id) => {
+    console.log('Editando', id);
+  }
+  const handleDelete = (id) => {
+    console.log('Deletando', id);
+  }
+
   return (
-    <div className="App">
-      <h1>Cadastro</h1>
-      <div>
-      <h1>Pessoa Page</h1>
-      <p>This is the Pessoa page.</p>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Nome:
-          <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Username:
-          <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          CPF:
-          <input type="text" value={cpf} onChange={(event) => setCpf(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          CNH:
-          <input type="text" value={cnh} onChange={(event) => setCnh(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Senha:
-          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Confirmar Senha:
-          <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
-        </label>
-        <br />
-        {error && <div style={{ color: 'ed' }}>{error}</div>}
-        <button type="submit">Cadastrar</button>
-      </form>
-    </div>
+    
+    <Container>
+      <Menu />
+      <Content>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <Button
+              variant="contained"
+              onClick={toggleDrawer(true)}
+              style={{ width: '100%', marginBottom: 16 }}
+            >
+              {t('adicionar')}
+            </Button>
+          </Grid>
+          <Grid item xs={10}>
+            <Box sx={{ width: '100%', boxShadow: 3, borderRadius: '8px', overflow: 'hidden' }}>
+              <CustomTable
+                title={t('Pessoa')}
+                columns={columns}
+                data={pessoa}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                style={{ borderRadius: '8px', overflow: 'hidden' }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Content>
+      <PessoaCadastro
+        isOpen={isDrawerOpen}
+        onClose={toggleDrawer(false)}
+        t={t} 
+        onCadastroSucesso={getPessoa}
+      />
+    </Container>
   );
 }

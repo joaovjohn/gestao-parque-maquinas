@@ -26,9 +26,9 @@ const show = async (req, res) => {
 const create = async (req, res) => {
     try {
         const marca = req.body;
-        const newMarca = await marcaService.create(marca);
+        await marcaService.create(marca);
 
-        res.status(201).json(newMarca);
+        return res.status(201).json({ message: 'Marca criada com sucesso' });
     } catch (err) {
         console.log(err)
         res.status(500).json({ error: err.message });
@@ -38,13 +38,13 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         const marca = req.body;
-        const updatedMarca = await marcaService.update(req.params.id, marca);
-        res.status(201).json(updatedMarca);
+        await marcaService.update(req.params.id, marca);
+        return res.status(201).json({ message: 'Marca atualizada com sucesso' });
     } catch (err) {
         console.log(err)
         res.status(500).json({ error: err.message });
     }
-}
+};
 
 const destroy = async (req, res) => {
     try {

@@ -1,5 +1,7 @@
 import React, { createContext, useState } from "react";
 import { api } from "../api/api";
+import { toast } from 'react-toastify';
+
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -13,29 +15,29 @@ export const AuthProvider = ({ children }) => {
     return !!isLogged;
   });
 
-  const signIn = async (login, senha) => {
+  const signIn = async (login, senha,navegate) => {
     try {
-      const response = await api.post('/api/login', {
+      const response = await api.post('/login', {
         login,
         senha,
       });
-      console.log('Token:', response);
-      console.log('Token:', response.data.token);
-  
       const { token } = await response.data;
   
       localStorage.setItem("@token:user", `"${token}"`); 
-      console.log('Token:', token);
       setLogged(true);
+      toast.success('Login bem-sucedido!'); // Toast de sucesso
+      navegate('/');
     } catch (error) {
       console.error(error);
+      toast.error('Falha no login. Verifique suas credenciais.'); // Toast de erro
     }
   };
 
-  const signOut = () => {
+  const signOut = (navigate) => {
     localStorage.removeItem("@token:user");
     setLogged(false);
     setUser(null);
+    navigate('/login');
   };
 
   return (
