@@ -6,11 +6,16 @@ import {
 import { Motorista } from "./pages/Motorista";
 import { Pessoa } from "./pages/Pessoa";
 import { Login } from "./pages/login";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PrivateRoute = ({ children }) => {
   const { logged } = useAuth();
-
-  return logged ? children : <Navigate to="/login" replace />;
+  if (!logged) {
+    toast.error('Você precisa estar logado para acessar esta página!');
+    return <Navigate to="/login" replace />;
+  }
+  return children;
 };
 
 export const RoutesComponent = () => {
@@ -18,11 +23,13 @@ export const RoutesComponent = () => {
   
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={logged ? <Navigate to="/pessoa" replace />: <Login />} />
         <Route path="/login" element={ <Login />} />
         <Route path="/motorista" element={<PrivateRoute><Motorista /></PrivateRoute>} />
         <Route path="/pessoa" element={<PrivateRoute><Pessoa /></PrivateRoute>} />
+        <Route path="/pessoa/cadastro" element={<PrivateRoute><Pessoa /></PrivateRoute>} />
         <Route path="*" element={<Navigate to={logged ? "/pessoa" : "/login"} replace />} />
       </Routes>
     </BrowserRouter>
