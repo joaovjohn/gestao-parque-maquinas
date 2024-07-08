@@ -40,15 +40,14 @@ class VeiculoService extends BaseService{
         return await db.query(sql);
     }
 
-    async veiculoDisponivel(id = null) {
-
+    async veiculosByStatus(status, id = null) {
         const sql = `
-            SELECT 
-                v.id, 
-                v.categoria, 
-                v.placa, 
-                v.status, 
-                v.nome, 
+            SELECT
+                v.id,
+                v.categoria,
+                v.placa,
+                v.status,
+                v.nome,
                 v.ano_fabricacao,
                 m.nome as marca
             FROM veiculo v
@@ -57,10 +56,10 @@ class VeiculoService extends BaseService{
         `;
 
         if (id) {
-            return await db.query(sql + ' AND v.id = $2', [veiculoModel.DISPONIVEL, id]);
+            return await db.query(sql + ' AND v.id = $2', [status, id]);
         }
 
-        return await db.query(sql, [veiculoModel.DISPONIVEL]);
+        return await db.query(sql, [status]);
     }
 }
 
