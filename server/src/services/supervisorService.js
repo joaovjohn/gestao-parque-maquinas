@@ -16,13 +16,13 @@ class SupervisorService extends BaseService{
             SELECT 
                 p.id, 
                 p.nome,
-                s.descricao,
+                s.descricao
             FROM supervisor s
             LEFT JOIN pessoa p ON s.pessoa_id = p.id
         `;
 
         if (id) {
-            return await db.query(sql + ' WHERE m.pessoa_id = $1', [id]);
+            return await db.query(sql + ' WHERE s.pessoa_id = $1', [id]);
         }
 
         return await db.query(sql);
