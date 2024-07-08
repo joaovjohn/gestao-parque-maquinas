@@ -1,72 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import Menu from '../../components/Menu';
+import { CustomTable } from '../../components/CustomTable';
+import { api } from '../../api/api';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 export function Pessoa() {
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [cnh, setCnh] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [pessoa,setPessoa] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (password!== confirmPassword) {
-      setError('Senhas não conferem');
-    } else {
-      setError(null);
-      // Aqui você pode fazer a requisição para o backend
-      console.log('Cadastro realizado com sucesso!');
-    }
+  const columns = [
+    { id: 'id', label: 'ID' },
+    { id: 'nome', label: 'Nome' },
+    { id: 'cpf', label: 'CPF' },
+    { id: 'email', label: 'Email' },
+    { id: 'telefone', label: 'Telefone' },
+    { id: 'actions', label: 'Actions' },
+  ];
+  const redirectToForm = () => {
+    navigate('/pessoa/cadastro'); 
   };
 
+
+  useEffect(() => {
+    const getPessoa = async () => {
+      try {
+        const token = localStorage.getItem('@token:user').replace(/['"]+/g, '');
+        console.log('Token:', token);
+        const res = await api.get('/pessoa',{
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        console.log('Pessoa:', res.data);
+        console.log('Pessoa:', res.data.data);
+        setPessoa(res.data.data);
+      } catch (error) {
+        console.error(error);
+        setError('Houve um erro ao buscar a pessoa');
+      }
+    };
+    getPessoa();
+    console.log('Pessoa:', pessoa);
+  }, []);
+
+  const handleEdit = (id) => {
+    console.log('Editando', id);
+  }
+  const handleDelete = (id) => {
+    console.log('Deletando', id);
+  }
+
   return (
-    <div className="App">
-      <h1>Cadastro</h1>
-      <div>
-      <h1>Pessoa Page</h1>
-      <p>This is the Pessoa page.</p>
+    <div sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: 4
+    }}>
+      <Button variant="contained" onClick={redirectToForm} sx={{ marginBottom: 2 }}>
+        Adicionar Pessoa
+      </Button>
+      <div sx={{
+        width: '80%',
+        boxShadow: 3,
+        borderRadius: '8px',
+        overflow: 'hidden'
+      }}>
+        <Menu />
+        <CustomTable 
+          title="Pessoas"
+          columns={columns}
+          data={pessoa}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          sx={{
+            borderRadius: '8px', 
+            overflow: 'hidden' 
+          }}
+        />
       </div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Nome:
-          <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Username:
-          <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          CPF:
-          <input type="text" value={cpf} onChange={(event) => setCpf(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          CNH:
-          <input type="text" value={cnh} onChange={(event) => setCnh(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Senha:
-          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-        </label>
-        <br />
-        <label>
-          Confirmar Senha:
-          <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
-        </label>
-        <br />
-        {error && <div style={{ color: 'ed' }}>{error}</div>}
-        <button type="submit">Cadastrar</button>
-      </form>
     </div>
   );
 }
