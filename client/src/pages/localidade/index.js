@@ -4,6 +4,7 @@ import { CustomTable } from "../../components/CustomTable";
 import { api } from "../../api/api";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { toast } from "react-toastify";
 import { Form } from "../../components/Form";
 
 const drawerWidth = 240;
@@ -16,52 +17,50 @@ const Content = styled("main")(({ theme }) => ({
   flexGrow: 1,
   padding: 60,
   marginLeft: drawerWidth,
+  width: `calc(100% - ${drawerWidth}px)`,
 }));
 
-export function Pessoa() {
-  const [pessoa, setPessoa] = useState([]);
+export function Localidade() {
+  const [localidade, setLocalidade] = useState([]);
+
   const [editing, setEditing] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const columns = [
-    { id: "nome", label: "Nome" },
-    { id: "cpf", label: "CPF" },
-    { id: "email", label: "Email" },
-    { id: "data_nasc", type: "date", label: "Data de Nascimento" },
-  ];
 
   const toggleDrawer = (open) => () => {
     setIsDrawerOpen(open);
   };
-  const getPessoa = async () => {
-    try {
-      const res = await api.get("/pessoa");
-      setPessoa(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
+  const columns = [
+    { id: "nome", label: "Bairro" },
+    { id: "cidade", label: "Cidade" },
+    { id: "uf", label: "Estado" },
+    { id: "pais", label: "País" },
+  ];
 
   useEffect(() => {
-    getPessoa();
+    const getLocalidades = async () => {
+      try {
+        const res = await api.get("/localidade");
+        if (res.data.data) setLocalidade(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLocalidades();
   }, []);
 
   const handleEdit = (id) => {
-    const editData = { ...pessoa?.find((i) => i?.id === Number(id)) };
-    setEditing({
-      id: editData?.id,
-      email: editData?.email,
-      nome: editData?.nome,
-    });
+    setEditing(localidade?.find((i) => i?.id === Number(id)));
     setIsDrawerOpen(true);
   };
 
   const handleDelete = async (id) => {
     try {
-      await api.delete("/pessoa/" + id);
-      setPessoa(pessoa?.filter((i) => i?.id !== Number(id)));
+      await api.delete("/localidade/" + id);
+      setLocalidade(localidade?.filter((i) => i?.id !== Number(id)));
     } catch (error) {
-      console.error(error);
+      toast.error(error?.response?.data?.error);
     }
   };
 
@@ -70,7 +69,7 @@ export function Pessoa() {
       <Menu />
       <Content>
         <Grid container spacing={2}>
-          <h3>Pessoas</h3>
+          <h3>Localidades</h3>
           <div
             className="row"
             style={{
@@ -87,43 +86,33 @@ export function Pessoa() {
               Adicionar
             </button>
           </div>
-
           <CustomTable
-            title="Pessoa"
+            title="Localidades"
             columns={columns}
-            data={pessoa}
-            onDelete={handleDelete}
+            data={localidade}
+            style={{
+              overflow: "hidden",
+            }}
             onEdit={handleEdit}
+            onDelete={handleDelete}
           />
         </Grid>
       </Content>
       <Form
         isOpen={isDrawerOpen}
         onClose={toggleDrawer(false)}
-        keys={[
-          { id: "nome", label: "Nome" },
-          { id: "cpf", label: "CPF", nonEdit: true },
-          { id: "email", label: "Email" },
-          {
-            id: "data_nasc",
-            type: "date",
-            label: "Data de Nascimento",
-            nonEdit: true,
-          },
-          { id: "login", label: "Login", nonEdit: true },
-          { id: "senha", type: "password", label: "Senha" },
-        ]}
-        endpoint="/pessoa"
+        keys={columns}
+        endpoint="/localidade"
         onCadastroSucesso={async () => {
           try {
-            const res = await api.get("/pessoa");
-            setPessoa(res.data.data);
+            const res = await api.get("/localidade");
+            if (res.data.data) setLocalidade(res.data.data);
           } catch (error) {
             console.error(error);
           }
         }}
-        name="pessoa"
         reset={() => setEditing({})}
+        name="motorista"
         editing={editing}
       />
     </Container>

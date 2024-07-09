@@ -1,1 +1,1 @@
-API=
+REACT_APP_API_URL=localhost:3333/api

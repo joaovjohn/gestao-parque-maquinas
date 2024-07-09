@@ -1,0 +1,11 @@
+.card-table {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 32px;
+  background-color: white !important;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  gap: 18px;
+  flex-direction: "column";
+}

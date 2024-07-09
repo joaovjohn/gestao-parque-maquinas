@@ -11,9 +11,15 @@ async function login(req, res) {
     }
     const user = await db.oneOrNone(`SELECT id,login,senha FROM pessoa WHERE login = $1`, login);
     if (user && await bcrypt.compare(senha, user.senha)) {
-        const payload = { id: user.id, login: user.login };
+        const isSupervisor = await db.oneOrNone(`SELECT 1 FROM supervisor WHERE pessoa_id = $1`, user.id);
+        const isMotorista = await db.oneOrNone(`SELECT 1 FROM motorista WHERE pessoa_id = $1`, user.id);
+        const role = isSupervisor ? 'supervisor' : isMotorista ? 'motorista' : 'pessoa';
+        if (role === 'pessoa') {
+            return res.status(401).json({ message: 'Usuário não autorizado' });
+        }
+        const payload = { id: user.id, login: user.login , user: role };
         const token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' });
-        res.json({ message: 'Login successful', token });
+        res.json({ message: 'Login successful', token , user: role});
     } else {
         res.status(401).json({ message: 'Usuario ou Senha inválidos' });
     }

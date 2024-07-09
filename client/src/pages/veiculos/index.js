@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import Menu from "../../components/Menu";
 import { CustomTable } from "../../components/CustomTable";
 import { api } from "../../api/api";
+import { toast } from "react-toastify";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Form } from "../../components/Form";
+import "./styles.css";
 
 const drawerWidth = 240;
 
@@ -16,52 +18,60 @@ const Content = styled("main")(({ theme }) => ({
   flexGrow: 1,
   padding: 60,
   marginLeft: drawerWidth,
+  width: `calc(100% - ${drawerWidth}px)`,
 }));
 
-export function Pessoa() {
-  const [pessoa, setPessoa] = useState([]);
+export function Veiculo() {
+  const [veiculo, setVeiculo] = useState([]);
+  const [marca, setMarca] = useState([]);
   const [editing, setEditing] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const columns = [
-    { id: "nome", label: "Nome" },
-    { id: "cpf", label: "CPF" },
-    { id: "email", label: "Email" },
-    { id: "data_nasc", type: "date", label: "Data de Nascimento" },
-  ];
 
   const toggleDrawer = (open) => () => {
     setIsDrawerOpen(open);
   };
-  const getPessoa = async () => {
-    try {
-      const res = await api.get("/pessoa");
-      setPessoa(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
+  const columns = [
+    { id: "nome", label: "Nome" },
+    { id: "ano_fabricacao", label: "Ano" },
+    { id: "placa", label: "Placa" },
+    { id: "status", label: "Status" },
+  ];
 
   useEffect(() => {
-    getPessoa();
+    const getVeiculos = async () => {
+      try {
+        const res = await api.get("/veiculo");
+        if (res.data.data) setVeiculo(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const getMarcas = async () => {
+      try {
+        const res = await api.get("/marca");
+        if (res.data.data) setMarca(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getVeiculos();
+    getMarcas();
   }, []);
 
   const handleEdit = (id) => {
-    const editData = { ...pessoa?.find((i) => i?.id === Number(id)) };
-    setEditing({
-      id: editData?.id,
-      email: editData?.email,
-      nome: editData?.nome,
-    });
+    setEditing(veiculo?.find((i) => i?.id === Number(id)));
     setIsDrawerOpen(true);
   };
 
   const handleDelete = async (id) => {
     try {
-      await api.delete("/pessoa/" + id);
-      setPessoa(pessoa?.filter((i) => i?.id !== Number(id)));
+      await api.delete("/veiculo/" + id);
+      setVeiculo(veiculo?.filter((i) => i?.id !== Number(id)));
     } catch (error) {
-      console.error(error);
+      toast.error(error?.response?.data?.error);
     }
   };
 
@@ -70,7 +80,7 @@ export function Pessoa() {
       <Menu />
       <Content>
         <Grid container spacing={2}>
-          <h3>Pessoas</h3>
+          <h3>Veículos</h3>
           <div
             className="row"
             style={{
@@ -87,11 +97,13 @@ export function Pessoa() {
               Adicionar
             </button>
           </div>
-
           <CustomTable
-            title="Pessoa"
+            title="Veículos"
             columns={columns}
-            data={pessoa}
+            data={veiculo}
+            style={{
+              overflow: "hidden",
+            }}
             onDelete={handleDelete}
             onEdit={handleEdit}
           />
@@ -102,27 +114,31 @@ export function Pessoa() {
         onClose={toggleDrawer(false)}
         keys={[
           { id: "nome", label: "Nome" },
-          { id: "cpf", label: "CPF", nonEdit: true },
-          { id: "email", label: "Email" },
           {
-            id: "data_nasc",
-            type: "date",
-            label: "Data de Nascimento",
-            nonEdit: true,
+            id: "ano_fabricacao",
+            label: "Ano",
           },
-          { id: "login", label: "Login", nonEdit: true },
-          { id: "senha", type: "password", label: "Senha" },
+          {
+            id: "categoria",
+            label: "Categoria",
+          },
+          { id: "placa", label: "Placa" },
+          {
+            id: "id_marca",
+            label: "Marca",
+            options: marca?.map((i) => ({ value: i?.id, label: i?.nome })),
+          },
         ]}
-        endpoint="/pessoa"
+        endpoint="/veiculo"
         onCadastroSucesso={async () => {
           try {
-            const res = await api.get("/pessoa");
-            setPessoa(res.data.data);
+            const res = await api.get("/veiculo");
+            if (res.data.data) setVeiculo(res.data.data);
           } catch (error) {
             console.error(error);
           }
         }}
-        name="pessoa"
+        name="veiculo"
         reset={() => setEditing({})}
         editing={editing}
       />

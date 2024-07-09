@@ -21,18 +21,61 @@ class ServicoService extends BaseService{
             const errorMessages = validate.validation.error.details.map(detail => detail.message);
             throw new Error(errorMessages.join(', '));
         }
-
         const erro = await this.validacoesServico(servico);
         if (erro) {
             return erro;
         }
-
         await this.create(servico);
         return {status: 201, json: {message: 'Serviço criado com sucesso'}};
     }
 
-    async validacoesServico(servico) {
+    async getAll(){
+        return await db.query(`SELECT s.id, s.status as status_id ,CASE
+                WHEN s.status = 1 THEN 'AGUARDANDO EXECUCAO'
+                WHEN s.status = 2 THEN 'EM ANDAMENTO'
+                WHEN s.status = 3 THEN 'CONCLUIDO'
+                ELSE 'Status desconhecido'
+            END as status ,
+            s.prioridade as prioridade_id, CASE
+            WHEN s.prioridade = 1 THEN 'ALTA'
+            WHEN s.prioridade = 2 THEN 'MEDIA'
+            WHEN s.prioridade = 3 THEN 'BAIXA'
+            ELSE 'prioridade desconhecido'
+        END as prioridade , s.dt_inicio, s.dt_final, p.nome as motorista, v.placa, l.nome as localidade FROM servico s JOIN pessoa p ON s.motorista_id = p.id JOIN veiculo v ON s.veiculo_id = v.id JOIN localidade l ON s.localidade_id = l.id  ORDER BY s.id`);
+    }
 
+    async getAllAndamento(){
+        return await db.query(`SELECT s.id, s.status as status_id,CASE
+        WHEN s.status = 1 THEN 'AGUARDANDO EXECUCAO'
+        WHEN s.status = 2 THEN 'EM ANDAMENTO'
+        WHEN s.status = 3 THEN 'CONCLUIDO'
+        ELSE 'Status desconhecido'
+    END as status , s.dt_inicio, s.dt_final, p.nome as motorista, v.placa, l.nome as localidade FROM servico s JOIN pessoa p ON s.motorista_id = p.id JOIN veiculo v ON s.veiculo_id = v.id JOIN localidade l ON s.localidade_id = l.id  WHERE s.status = '2'`);
+    }
+
+    async iniciar(id){
+        const erro = await db.query(`UPDATE servico SET status = '2', dt_inicio = now() WHERE id = $1`, [id]);
+        if (erro) {
+            return erro;
+        }
+        return {message: 'Serviço iniciado com sucesso'};
+    }
+
+    async finalizar(id){
+        const erro = await db.query(`UPDATE servico SET status = '3', dt_final = now() WHERE id = $1`, [id]);
+        if (erro) {
+            return erro;
+        }
+        return {message: 'Serviço finalizado com sucesso'};
+    }
+
+    async destroy(id){
+        await db.query(`DELETE FROM servico WHERE id = $1`, [id]);
+        return {message: 'Serviço removido com sucesso'};
+    }
+
+
+    async validacoesServico(servico) {
         const validate = this.model.validate(servicoModel);
         if (validate.validation.error) {
             const errorMessages = validate.validation.error.details.map(detail => detail.message);

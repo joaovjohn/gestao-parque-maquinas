@@ -7,7 +7,6 @@ class BaseService {
     }
 
     async create(item) {
-
         // faz a validacao dos campos do item
         const validate = this.model.validate(item);
         if (validate.validation.error) {
