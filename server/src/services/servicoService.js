@@ -29,28 +29,58 @@ class ServicoService extends BaseService{
         return {status: 201, json: {message: 'Serviço criado com sucesso'}};
     }
 
-    async getAll(){
-        return await db.query(`SELECT s.id, s.status as status_id ,CASE
-                WHEN s.status = 1 THEN 'AGUARDANDO EXECUCAO'
-                WHEN s.status = 2 THEN 'EM ANDAMENTO'
-                WHEN s.status = 3 THEN 'CONCLUIDO'
-                ELSE 'Status desconhecido'
-            END as status ,
-            s.prioridade as prioridade_id, CASE
-            WHEN s.prioridade = 1 THEN 'ALTA'
-            WHEN s.prioridade = 2 THEN 'MEDIA'
-            WHEN s.prioridade = 3 THEN 'BAIXA'
-            ELSE 'prioridade desconhecido'
-        END as prioridade , s.dt_inicio, s.dt_final, p.nome as motorista, v.placa, l.nome as localidade FROM servico s JOIN pessoa p ON s.motorista_id = p.id JOIN veiculo v ON s.veiculo_id = v.id JOIN localidade l ON s.localidade_id = l.id  ORDER BY s.id`);
+    async getAll(status = null){
+        const sql = `
+            SELECT s.id, s.status as status_id ,
+                CASE
+                    WHEN s.status = ${servicoModel.AGUARDANDO_EXECUCAO} THEN 'AGUARDANDO EXECUCAO'
+                    WHEN s.status = ${servicoModel.EM_ANDAMENTO} THEN 'EM ANDAMENTO'
+                    WHEN s.status = ${servicoModel.CONCLUIDO} THEN 'CONCLUIDO'
+                    ELSE 'Status desconhecido'
+                    END as status ,
+                s.prioridade as prioridade_id, 
+                CASE
+                    WHEN s.prioridade = ${servicoModel.ALTA} THEN 'ALTA'
+                    WHEN s.prioridade = ${servicoModel.MEDIA} THEN 'MEDIA'
+                    WHEN s.prioridade = ${servicoModel.BAIXA} THEN 'BAIXA'
+                    ELSE 'Prioridade desconhecido'
+                END as prioridade, 
+                s.dt_inicio, 
+                s.dt_final, 
+                p.nome as motorista, 
+                v.placa, l.nome as localidade 
+            FROM servico s 
+            JOIN pessoa p ON s.motorista_id = p.id 
+            JOIN veiculo v ON s.veiculo_id = v.id 
+            JOIN localidade l ON s.localidade_id = l.id  
+            ORDER BY s.id`;
+
+        if (status) {
+            return await db.query(sql + ' WHERE s.status = $1', [status]);
+        }
+
+        return await db.query(sql);
     }
 
     async getAllAndamento(){
-        return await db.query(`SELECT s.id, s.status as status_id,CASE
-        WHEN s.status = 1 THEN 'AGUARDANDO EXECUCAO'
-        WHEN s.status = 2 THEN 'EM ANDAMENTO'
-        WHEN s.status = 3 THEN 'CONCLUIDO'
-        ELSE 'Status desconhecido'
-    END as status , s.dt_inicio, s.dt_final, p.nome as motorista, v.placa, l.nome as localidade FROM servico s JOIN pessoa p ON s.motorista_id = p.id JOIN veiculo v ON s.veiculo_id = v.id JOIN localidade l ON s.localidade_id = l.id  WHERE s.status = '2'`);
+        return await db.query(`
+            SELECT s.id, s.status as status_id,
+                CASE
+                    WHEN s.status = ${servicoModel.AGUARDANDO_EXECUCAO} THEN 'AGUARDANDO EXECUCAO'
+                    WHEN s.status = ${servicoModel.EM_ANDAMENTO} THEN 'EM ANDAMENTO'
+                    WHEN s.status = ${servicoModel.CONCLUIDO} THEN 'CONCLUIDO'
+                    ELSE 'Status desconhecido'
+                END as status ,
+                s.dt_inicio, 
+                s.dt_final, 
+                p.nome as motorista, 
+                v.placa, l.nome as localidade 
+            FROM 
+                servico s 
+            JOIN pessoa p ON s.motorista_id = p.id 
+            JOIN veiculo v ON s.veiculo_id = v.id 
+            JOIN localidade l ON s.localidade_id = l.id 
+            WHERE s.status = '${servicoModel.EM_ANDAMENTO}'`);
     }
 
     async iniciar(id){
