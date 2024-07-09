@@ -4,8 +4,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Motorista } from "./pages/Motorista";
 import { Pessoa } from "./pages/Pessoa";
 import { Servico } from "./pages/servicos";
+import { Veiculo } from "./pages/veiculos";
 import { Login } from "./pages/login";
 import { Home } from "./pages/home";
+import { Localidade } from "./pages/localidade";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,7 +21,7 @@ const PrivateRoute = ({ children }) => {
 };
 
 export const RoutesComponent = () => {
-  const { logged } = useAuth();
+  const { logged, permission } = useAuth();
 
   return (
     <BrowserRouter>
@@ -27,14 +29,52 @@ export const RoutesComponent = () => {
       <Routes>
         <Route path="/" element={logged ? <Home /> : <Login />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/motorista"
-          element={
-            <PrivateRoute>
-              <Motorista />
-            </PrivateRoute>
-          }
-        />
+        {permission !== "motorista" && (
+          <>
+            <Route
+              path="/motorista"
+              element={
+                <PrivateRoute>
+                  <Motorista />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/veiculo"
+              element={
+                <PrivateRoute>
+                  <Veiculo />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/localidade"
+              element={
+                <PrivateRoute>
+                  <Localidade />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/pessoa"
+              element={
+                <PrivateRoute>
+                  <Pessoa />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/pessoa/cadastro"
+              element={
+                <PrivateRoute>
+                  <Pessoa />
+                </PrivateRoute>
+              }
+            />
+          </>
+        )}
+
         <Route
           path="/servico"
           element={
@@ -43,22 +83,7 @@ export const RoutesComponent = () => {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/pessoa"
-          element={
-            <PrivateRoute>
-              <Pessoa />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/pessoa/cadastro"
-          element={
-            <PrivateRoute>
-              <Pessoa />
-            </PrivateRoute>
-          }
-        />
+
         <Route
           path="*"
           element={<Navigate to={logged ? "/pessoa" : "/login"} replace />}

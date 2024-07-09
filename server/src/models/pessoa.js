@@ -36,12 +36,9 @@ class Pessoa {
 
     static validateUpdate(pessoa) {
         const schema = v.object({
-            cpf: v.string().length(11),
-            data_nasc: v.date(),
             email: v.string().email().max(50),
             senha: v.string().min(8).max(100),
             nome: v.string().max(256),
-            status: v.number().integer(),
         });
 
         const validation = schema.validate(pessoa,{ abortEarly: false });

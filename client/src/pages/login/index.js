@@ -24,7 +24,7 @@ export function Login() {
   return (
     <div className="container">
       <img src="" alt="" className="" />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-card">
         <header>
           <img
             src={Logo}

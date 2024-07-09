@@ -19,7 +19,7 @@ export const CustomTable = ({
   data,
   onEdit,
   onDelete,
-  customButton,
+  CustomComponent,
 }) => {
   return (
     <div
@@ -36,7 +36,7 @@ export const CustomTable = ({
                   {column.label}
                 </TableCell>
               ))}
-              {(!!onEdit || !!onDelete || !!customButton) && (
+              {(!!onEdit || !!onDelete || !!CustomComponent) && (
                 <TableCell style={{ fontWeight: 600 }} />
               )}
             </TableRow>
@@ -46,12 +46,12 @@ export const CustomTable = ({
               <TableRow key={row.id}>
                 {columns?.map((column) => (
                   <TableCell key={column.id}>
-                    {column?.type === "data"
-                      ? new Date(row[column.id]).toLocaleDateString()
+                    {column?.type === "date"
+                      ? new Date(row[column.id]).toLocaleDateString("pt-BR")
                       : row[column.id]}
                   </TableCell>
                 ))}
-                {(!!onEdit || !!onDelete || !!customButton) && (
+                {(!!onEdit || !!onDelete || !!CustomComponent) && (
                   <TableCell>
                     {!!onEdit && (
                       <IconButton onClick={() => onEdit(row.id)}>
@@ -63,7 +63,7 @@ export const CustomTable = ({
                         <DeleteIcon />
                       </IconButton>
                     )}
-                    {!!customButton && customButton}
+                    {!!CustomComponent && <CustomComponent record={row} />}
                   </TableCell>
                 )}
               </TableRow>
