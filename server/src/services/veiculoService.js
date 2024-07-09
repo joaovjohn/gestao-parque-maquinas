@@ -40,6 +40,26 @@ class VeiculoService extends BaseService{
         return await db.query(sql);
     }
 
+    async horas() {
+        const sql = `
+             SELECT 
+                v.id, 
+                v.categoria, 
+                v.placa, 
+                v.status, 
+                v.nome as veiculo, 
+                v.ano_fabricacao, 
+                m.nome as marca,
+                SUM(EXTRACT(EPOCH FROM (s.dt_final - s.dt_inicio))/3600) as horas
+            FROM veiculo v
+            LEFT JOIN marca m ON v.id_marca = m.id
+            LEFT JOIN servico s ON v.id = s.veiculo_id
+            GROUP BY v.id, m.nome
+        `;
+
+        return await db.query(sql);
+    }
+
     async veiculosByStatus(status, id = null) {
         const sql = `
             SELECT

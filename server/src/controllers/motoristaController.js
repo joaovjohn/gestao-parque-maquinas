@@ -1,5 +1,6 @@
 const motoristaService = require('../services/motoristaService');
 const pessoaModel = require('../models/pessoa');
+
 const index =  async (req, res) => {
 
   try {
@@ -66,6 +67,15 @@ const availableDrivers = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+const horasTrabalhadas = async (req, res) => {
+    try {
+        const motoristas = await motoristaService.horasTrabalhadas();
+        res.json({data: motoristas});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
 // motoristas em servico
 const driversOnDuty = async (req, res) => {
     try {
@@ -83,5 +93,6 @@ module.exports = {
     update,
     destroy,
     availableDrivers,
-    driversOnDuty
+    driversOnDuty,
+    horasTrabalhadas
 };
