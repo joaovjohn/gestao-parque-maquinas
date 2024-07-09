@@ -12,6 +12,15 @@ const index =  async (req, res) => {
   }
 };
 
+const indexToCreate =  async (req, res) => {
+  try {
+    const pessoas = await pessoaService.getAllToCreate();
+    res.json({data: pessoas});
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 const show =  async (req, res) => {
   const fieldsToSelect = ['id' ,'status', 'cpf', 'data_nasc','email','login', 'nome'];
 
@@ -48,7 +57,7 @@ const update = async (req,res) => {
 
 const destroy = async (req,res) => {
   try {
-    await pessoaService.delete(req.params.id)
+    await pessoaService.deletePessoa(req.params.id)
     return res.status(201).json({message: 'Pessoa removida com sucesso'});  
   } catch (err) {
     console.log(err)
@@ -58,7 +67,8 @@ const destroy = async (req,res) => {
 
 module.exports = {
     create,
-    index, 
+    index,
+    indexToCreate,
     show,
     update,
     destroy
