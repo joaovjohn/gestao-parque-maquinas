@@ -30,6 +30,7 @@ router.post('/login', auth.login);
 
 // Rotas de pessoas
 authRouter.get('/pessoa',checkRole([ 'supervisor']), pessoaController.index);
+authRouter.get('/pessoa-criar',checkRole([ 'supervisor']), pessoaController.indexToCreate);
 authRouter.get('/pessoa/:id',checkRole([ 'supervisor']), pessoaController.show);
 authRouter.post('/pessoa',checkRole([ 'supervisor']), pessoaController.create);
 authRouter.put('/pessoa/:id',checkRole([ 'supervisor']), pessoaController.update);
