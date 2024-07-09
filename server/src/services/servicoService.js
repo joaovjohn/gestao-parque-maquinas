@@ -31,6 +31,28 @@ class ServicoService extends BaseService{
         return {status: 201, json: {message: 'Serviço criado com sucesso'}};
     }
 
+    async startServico(id) {
+        const servico = await this.getByPrimaryKey(id);
+        if (!servico || servico.length === 0) {
+            return {sstatus: 404, json: {error: 'Serviço não encontrado'}};
+        }
+
+        await this.update(id, {status: servicoModel.EM_ANDAMENTO, dt_inicio: new Date()});
+        return {status: 200, json: {message: 'Serviço iniciado com sucesso'}};
+    }
+
+    async endServico(id) {
+        const servico = await this.getByPrimaryKey(id);
+        if (!servico || servico.length === 0) {
+            return {status: 404, json: {error: 'Serviço não encontrado'}};
+        }
+
+        await this.update(id, {status: servicoModel.CONCLUIDO, dt_final: new Date()});
+        return {status: 200, json: {message: 'Serviço finalizado com sucesso'}};
+    }
+
+
+
     async validacoesServico(servico) {
 
         const validate = this.model.validate(servicoModel);

@@ -9,6 +9,7 @@ const marcaController = require('./controllers/marcaController');
 const localidadeController = require('./controllers/localidadeController');
 const veiculoController = require('./controllers/veiculoController');
 const supervisorController = require('./controllers/supervisorController');
+const servicoController = require('./controllers/servicoController');
 
 authRouter.use(passport.authenticate('jwt', { session: false }));
 
@@ -63,6 +64,15 @@ authRouter.get('/supervisor/:id', supervisorController.show);
 authRouter.post('/supervisor', supervisorController.create);
 authRouter.put('/supervisor/:id', supervisorController.update);
 authRouter.delete('/supervisor/:id', supervisorController.destroy);
+
+// Rotas para Servico
+// authRouter.get('/servico', servicoController.index);
+// authRouter.get('/servico/:id', servicoController.show);
+authRouter.post('/servico', servicoController.create);
+authRouter.put('/servico/start/:id', servicoController.startServico);
+authRouter.put('/servico/end/:id', servicoController.endServico);
+// authRouter.put('/servico/:id', servicoController.update);
+authRouter.delete('/servico/:id', servicoController.destroy);
 
 router.use('/', authRouter);
 

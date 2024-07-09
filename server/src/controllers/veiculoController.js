@@ -5,11 +5,9 @@ const index =  async (req, res) => {
 
   try {
     const veiculo = await veiculoService.getVeiculo();
-
-
-    res.json({data: veiculo});
+    return res.json({data: veiculo});
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 
@@ -17,10 +15,10 @@ const show =  async (req, res) => {
 
   try {
     const veiculo = await veiculoService.getVeiculo(req.params.id);
-    res.json({data: veiculo});
+    return res.json({data: veiculo});
   } catch (err) {
     console.log(err)
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 
@@ -28,11 +26,11 @@ const create = async (req,res) => {
   try {
     const veic = req.body;
     const response = await veiculoService.createVeiculo(veic);
-    res.status(response.status).json(response.json);
+    return res.status(response.status).json(response.json);
 
   } catch (err) {
     console.log(err)
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 
