@@ -1,5 +1,6 @@
 const { func } = require('joi');
 const servicoService = require('../services/servicoService');
+const servicoModel = require('../models/servico');
 
 async function create(req, res) {
     try {
@@ -23,7 +24,7 @@ async function index(req, res) {
 
 async function getByAndamento(req, res) {
     try {
-        const result = await servicoService.getAllAndamento();
+        const result = await servicoService.getAll(servicoModel.EM_ANDAMENTO);
         res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -80,6 +81,23 @@ async function finalizar(req, res) {
     }
 }
 
+async function getByAguardando(req, res) {
+    try {
+        const aguardando = await servicoService.getAll(servicoModel.AGUARDANDO_EXECUCAO);
+        res.status(200).json(aguardando);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+async function getByFinalizadosOntem(req, res) {
+    try {
+        const ontem = await servicoService.getAllFinalizadosOntem();
+        res.status(200).json(ontem);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     create,
     index,
@@ -88,5 +106,7 @@ module.exports = {
     destroy,
     getByAndamento,
     iniciar,
-    finalizar
+    finalizar,
+    getByAguardando,
+    getByFinalizadosOntem
 };

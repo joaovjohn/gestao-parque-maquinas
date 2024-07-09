@@ -87,7 +87,6 @@ class MotoristaService extends BaseService{
         if (id) {
             return await db.query(sql + ' AND m.pessoa_id = $2', [status, id]);
         }
-
         return await db.query(sql, [status]);
     }
 
