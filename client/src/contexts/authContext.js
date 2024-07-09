@@ -5,13 +5,13 @@ import { toast } from "react-toastify";
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const isLogged = localStorage.getItem("@token:user");
-    return JSON.parse(isLogged);
+  const [permission, setPermission] = useState(() => {
+    const perm = localStorage.getItem("@permission");
+    return JSON.parse(perm);
   });
 
   const [logged, setLogged] = useState(() => {
-    const isLogged = localStorage.getItem("@token:user");
+    const isLogged = localStorage.getItem("@token");
     api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
       isLogged
     )}`;
@@ -24,12 +24,14 @@ export const AuthProvider = ({ children }) => {
         login,
         senha,
       });
-      const { token } = await response.data;
+      const { token, user } = await response.data;
 
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      localStorage.setItem("@token:user", `"${token}"`);
+      localStorage.setItem("@token", `"${token}"`);
+      localStorage.setItem("@permission", JSON.stringify(user));
       setLogged(true);
+      setPermission(user);
       toast.success("Login bem-sucedido!"); // Toast de sucesso
       navegate("/");
     } catch (error) {
@@ -39,14 +41,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signOut = (navigate) => {
-    localStorage.removeItem("@token:user");
+    localStorage.removeItem("@token");
+    localStorage.removeItem("@permission");
     setLogged(false);
-    setUser(null);
+    setPermission(null);
     navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ logged, user, signIn, signOut }}>
+    <AuthContext.Provider value={{ logged, permission, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

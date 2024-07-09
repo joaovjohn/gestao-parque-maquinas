@@ -19,6 +19,18 @@
   background-color: #bbe2cd;
 }
 
+.add {
+  padding: 6px 24px;
+  color: white;
+  background: #00ac4f;
+  border: 0;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
 .card-column {
   margin-left: 20px;
   padding-top: 10px;

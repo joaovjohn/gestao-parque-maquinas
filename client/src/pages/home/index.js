@@ -31,7 +31,7 @@ export function Home() {
   const columns = [
     { id: "localidade", label: "Localidade" },
     { id: "motorista", label: "Motorista" },
-    { id: "dt_inicio", type: "data", label: "Inicío" },
+    { id: "dt_inicio", type: "date", label: "Inicío" },
     { id: "placa", label: "Placa" },
     { id: "status", label: "Status" },
   ];
@@ -157,16 +157,22 @@ export function Home() {
               marginTop: 32,
             }}
           >
-            <div className="card" style={{ flexDirection: "column" }}>
+            <div
+              className="card"
+              style={{ flexDirection: "column", alignItems: "center" }}
+            >
               <h3>Motoristas</h3>
               <PieChart
                 style={{ width: "50%" }}
                 label={({ dataEntry }) => dataEntry.title}
-                data={picaMotorista?.map((i) => ({
-                  title: i?.veiculo,
-                  value: i?.horas,
-                  color: hexy(),
-                }))}
+                labelStyle={{ fontSize: 4 }}
+                data={picaMotorista
+                  ?.filter((i) => !!i?.horas_trabalhadas)
+                  ?.map((i) => ({
+                    title: i?.nome,
+                    value: Number(i?.horas_trabalhadas),
+                    color: hexy(),
+                  }))}
               />
             </div>
             <div
@@ -178,11 +184,13 @@ export function Home() {
                 style={{ width: "50%" }}
                 label={({ dataEntry }) => dataEntry.title}
                 labelStyle={{ fontSize: 4 }}
-                data={picaVeiculo?.map((i) => ({
-                  title: i?.veiculo,
-                  value: i?.horas,
-                  color: hexy(),
-                }))}
+                data={picaVeiculo
+                  ?.filter((i) => !!i?.horas)
+                  ?.map((i) => ({
+                    title: i?.veiculo,
+                    value: Number(i?.horas),
+                    color: hexy(),
+                  }))}
               />
             </div>
           </div>
