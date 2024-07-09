@@ -18,7 +18,15 @@ class MotoristaService extends BaseService{
                 p.cpf,
                 num_cnh,
                 m.categoria_cnh,
-                p.status
+                p.status as status_id,
+                CASE
+                    WHEN p.status = 1 THEN 'Disponível'
+                    WHEN p.status = 2 THEN 'Em Serviço'
+                    WHEN p.status = 3 THEN 'Inativo'
+                    ELSE 'Status desconhecido'
+                END as status,
+                p.email,
+                p.login
             FROM motorista m
             LEFT JOIN pessoa p ON m.pessoa_id = p.id
         `;
@@ -59,8 +67,18 @@ class MotoristaService extends BaseService{
             SELECT 
                 p.id, 
                 p.nome,
-                m.num_cnh,
-                m.categoria_cnh
+                p.cpf,
+                num_cnh,
+                m.categoria_cnh,
+                p.status as status_id,
+                CASE
+                    WHEN p.status = 1 THEN 'Disponível'
+                    WHEN p.status = 2 THEN 'Em Serviço'
+                    WHEN p.status = 3 THEN 'Inativo'
+                    ELSE 'Status desconhecido'
+                END as status,
+                p.email,
+                p.login
             FROM motorista m
             LEFT JOIN pessoa p ON m.pessoa_id = p.id
             WHERE p.status = $1

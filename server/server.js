@@ -12,11 +12,14 @@ const opts = {
 };
 passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
-    const user = db.oneOrNone(`SELECT id FROM pessoa WHERE id = $1`, jwt_payload.id); 
+    const user =  async () => await db.oneOrNone(`SELECT id FROM pessoa WHERE id = $1`, jwt_payload.id); 
+    const supervisor = async () => await db.oneOrNone(`SELECT pessoa_id FROM supervisor WHERE pessoa_id = $1`, jwt_payload.id); 
+    const motorista = async () =>  await db.oneOrNone(`SELECT pessoa_id FROM motorista WHERE pessoa_id = $1`, jwt_payload.id); 
+    user.role = supervisor ? 'supervisor' : motorista ? 'motorista' : 'pessoa';
     if (user) {
-    return done(null, user);
+        return done(null, user);
     } else {
-    return done(null, false);
+        return done(null, false);
     }
     })
 );

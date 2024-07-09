@@ -14,6 +14,7 @@ async function create(req, res) {
 async function index(req, res) {
     try {
         const result = await servicoService.getAll();
+
         res.status(200).json({data: result});
     } catch (error) {
         res.status(500).json({ message: error.message });

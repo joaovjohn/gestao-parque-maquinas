@@ -25,10 +25,17 @@ class VeiculoService extends BaseService{
                 v.id, 
                 v.categoria, 
                 v.placa, 
-                v.status, 
+                v.status as status_id, 
+                CASE
+                    WHEN v.status = 1 THEN 'Disponível'
+                    WHEN v.status = 2 THEN 'Em Serviço'
+                    WHEN v.status = 3 THEN 'Inativo'
+                    ELSE 'Status desconhecido'
+                END as status,
                 v.nome, 
                 v.ano_fabricacao, 
-                m.nome as marca
+                m.nome as marca,
+                m.id as id_marca
             FROM veiculo v
             LEFT JOIN marca m ON v.id_marca = m.id
         `;
@@ -46,15 +53,22 @@ class VeiculoService extends BaseService{
                 v.id, 
                 v.categoria, 
                 v.placa, 
-                v.status, 
+                v.status as status_id, 
+                CASE
+                    WHEN v.status = 1 THEN 'Disponível'
+                    WHEN v.status = 2 THEN 'Em Serviço'
+                    WHEN v.status = 3 THEN 'Inativo'
+                    ELSE 'Status desconhecido'
+                END as status,
                 v.nome as veiculo, 
                 v.ano_fabricacao, 
                 m.nome as marca,
+                m.id as id_marca,
                 SUM(EXTRACT(EPOCH FROM (s.dt_final - s.dt_inicio))/3600) as horas
             FROM veiculo v
             LEFT JOIN marca m ON v.id_marca = m.id
             LEFT JOIN servico s ON v.id = s.veiculo_id
-            GROUP BY v.id, m.nome
+            GROUP BY v.id, m.nome, m.id
         `;
 
         return await db.query(sql);
@@ -69,7 +83,8 @@ class VeiculoService extends BaseService{
                 v.status,
                 v.nome,
                 v.ano_fabricacao,
-                m.nome as marca
+                m.nome as marca,
+                m.id as id_marca
             FROM veiculo v
             LEFT JOIN marca m ON v.id_marca = m.id
             WHERE v.status = $1

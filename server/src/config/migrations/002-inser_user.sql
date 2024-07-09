@@ -17,6 +17,16 @@ INSERT INTO public.supervisor (pessoa_id, descricao) VALUES
     (3, 'Supervisor de Manutenção')
 ON CONFLICT (pessoa_id) DO NOTHING;
 
+INSERT INTO public.motorista (pessoa_id, num_cnh, categoria_cnh) VALUES
+    (4, 'AB123456789', 'D'),
+    (5, 'BC123456789', 'D'),
+    (6, 'CD123456789', 'D'),
+    (7, 'DE123456789', 'D'),
+    (8, 'EF123456789', 'D'),
+    (9, 'FG123456789', 'D'),
+    (10, 'GH123456789', 'D')
+ON CONFLICT (pessoa_id) DO NOTHING;
+
 INSERT INTO public.localidade (id, nome, cidade, uf, pais) VALUES
     (1, 'Linha Santo Antonio', 'São José do Inhacorá', 'RS', 'Brasil'),
     (2, 'Linha Ilha', 'São José do Inhacorá', 'RS', 'Brasil'),
@@ -47,16 +57,6 @@ INSERT INTO public.veiculo (id, categoria, placa, status, nome, id_marca, ano_fa
     (7, 'Escavadeira', 'GGG1234', 1, 'Escavadeira Hidráulica', 3, 2021)
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO public.motorista (pessoa_id, num_cnh, categoria_cnh) VALUES
-    (4, 'AB123456789', 'D'),
-    (5, 'BC123456789', 'D'),
-    (6, 'CD123456789', 'D'),
-    (7, 'DE123456789', 'D'),
-    (8, 'EF123456789', 'D'),
-    (9, 'FG123456789', 'D'),
-    (10, 'GH123456789', 'D')
-ON CONFLICT (pessoa_id) DO NOTHING;
-
 INSERT INTO public.servico (id, status, dt_solicita, descricao, prioridade, localidade_id, motorista_id, veiculo_id, dt_inicio, dt_final) VALUES
     (1, 1, '2024-07-01 08:00:00', 'Entrega de mercadorias', 1, 1, 4, 1, NULL, NULL),
     (2, 2, '2024-07-02 09:00:00', 'Transporte escolar', 2, 2, 5, 2, '2024-07-02 10:00:00', NULL),
@@ -69,3 +69,9 @@ INSERT INTO public.servico (id, status, dt_solicita, descricao, prioridade, loca
     (9, 3, '2024-07-09 16:00:00', 'Serviço de transporte', 3, 2, 5, 2, '2024-07-09 17:00:00', '2024-07-09 21:00:00'),
     (10, 1, '2024-07-10 17:00:00', 'Aragem de solo', 1, 3, 6, 3, NULL, NULL)
 ON CONFLICT (id) DO NOTHING;
+
+SELECT setval('pessoa_id_seq', (SELECT MAX(id) FROM pessoa));
+SELECT setval('localidade_id_seq', (SELECT MAX(id) FROM localidade));
+SELECT setval('marca_id_seq', (SELECT MAX(id) FROM marca));
+SELECT setval('veiculo_id_seq', (SELECT MAX(id) FROM veiculo));
+SELECT setval('servico_id_seq', (SELECT MAX(id) FROM servico));
