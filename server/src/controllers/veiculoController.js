@@ -2,11 +2,8 @@ const veiculoService = require('../services/veiculoService');
 const veiculoModel = require('../models/veiculo');
 
 const index =  async (req, res) => {
-
   try {
     const veiculo = await veiculoService.getVeiculo();
-
-
     res.json({data: veiculo});
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -73,6 +70,15 @@ const vehiclesOnDuty = async (req, res) => {
     }
 }
 
+const horas = async (req, res) => {
+  try {
+    const veiculos = await veiculoService.horas();
+    return res.json({data: veiculos});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
     create,
     index, 
@@ -80,5 +86,6 @@ module.exports = {
     update,
     destroy,
     availableVehicles,
-    vehiclesOnDuty
+    vehiclesOnDuty,
+    horas
 };

@@ -15,8 +15,10 @@ class MotoristaService extends BaseService{
             SELECT 
                 p.id, 
                 p.nome,
+                p.cpf,
                 num_cnh,
-                m.categoria_cnh
+                m.categoria_cnh,
+                p.status
             FROM motorista m
             LEFT JOIN pessoa p ON m.pessoa_id = p.id
         `;
@@ -69,6 +71,21 @@ class MotoristaService extends BaseService{
         }
 
         return await db.query(sql, [status]);
+    }
+
+    async horasTrabalhadas() {
+        const sql = `
+            SELECT 
+                p.nome,
+                m.num_cnh,
+                m.categoria_cnh,
+                SUM(EXTRACT(EPOCH FROM (s.dt_final - s.dt_inicio))/3600) as horas_trabalhadas
+            FROM motorista m
+            LEFT JOIN pessoa p ON m.pessoa_id = p.id
+            LEFT JOIN servico s ON s.motorista_id = m.pessoa_id
+            GROUP BY p.nome, m.num_cnh, m.categoria_cnh
+        `;
+        return await db.query(sql);
     }
 
     async validacoesMotorista(mot) {

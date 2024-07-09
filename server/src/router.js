@@ -9,6 +9,7 @@ const marcaController = require('./controllers/marcaController');
 const localidadeController = require('./controllers/localidadeController');
 const veiculoController = require('./controllers/veiculoController');
 const supervisorController = require('./controllers/supervisorController');
+const servicoController = require('./controllers/servicoController');
 
 authRouter.use(passport.authenticate('jwt', { session: false }));
 
@@ -34,6 +35,8 @@ authRouter.delete('/motorista/:id', motoristaController.destroy);
 authRouter.get('/motoristas-disponiveis', motoristaController.availableDrivers);
 authRouter.get('/motoristas-servico', motoristaController.driversOnDuty);
 
+authRouter.get('/motorista-horas-trabalhadas', motoristaController.horasTrabalhadas);
+
 // Rotas de Marcas
 authRouter.get('/marca', marcaController.index);
 authRouter.get('/marca/:id', marcaController.show);
@@ -56,6 +59,7 @@ authRouter.put('/veiculo/:id', veiculoController.update);
 authRouter.delete('/veiculo/:id', veiculoController.destroy);
 authRouter.get('/veiculos-disponiveis', veiculoController.availableVehicles);
 authRouter.get('/veiculos-servico', veiculoController.vehiclesOnDuty)
+authRouter.get('/veiculo-horas', veiculoController.horas)
 
 // Rotas de Supervisor
 authRouter.get('/supervisor', supervisorController.index);
@@ -63,6 +67,15 @@ authRouter.get('/supervisor/:id', supervisorController.show);
 authRouter.post('/supervisor', supervisorController.create);
 authRouter.put('/supervisor/:id', supervisorController.update);
 authRouter.delete('/supervisor/:id', supervisorController.destroy);
+
+authRouter.get('/servico', servicoController.index);
+authRouter.get('/servico/:id', servicoController.show);
+authRouter.get('/servico-andamento', servicoController.getByAndamento);
+authRouter.post('/servico', servicoController.create);
+authRouter.put('/servico/:id/iniciar', servicoController.iniciar);
+authRouter.put('/servico/:id/finalizar', servicoController.finalizar);
+authRouter.put('/servico/:id', servicoController.update);
+authRouter.delete('/servico/:id', servicoController.destroy);
 
 router.use('/', authRouter);
 
