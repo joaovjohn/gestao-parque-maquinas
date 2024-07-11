@@ -16,7 +16,7 @@ class PessoaService extends BaseService{
                 p.cpf,
                 p.email,
                 p.login,
-                p.status,
+                p.status
             FROM pessoa p
             WHERE p.id NOT IN (SELECT pessoa_id FROM motorista)
             AND p.id NOT IN (SELECT pessoa_id FROM supervisor)

@@ -79,7 +79,7 @@ export function Motorista() {
     };
     const getPessoa = async () => {
       try {
-        const res = await api.get("/pessoa");
+        const res = await api.get("/pessoa-criar");
         setPessoa(res.data.data);
       } catch (error) {
         console.error(error);

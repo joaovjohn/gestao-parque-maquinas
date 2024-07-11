@@ -70,7 +70,7 @@ export function Servico() {
     const getAguardando = async () => {
       try {
         const res = await api.get("/servico-aguardando");
-        if (res.data.data) setAguardando(res.data.data);
+        if (res.data) setAguardando(res.data);
       } catch (error) {
         console.error(error);
       }
@@ -157,7 +157,7 @@ export function Servico() {
                 <img src="/profile-tick.svg" alt="" />
               </div>
               <div className="card-column">
-                <span>Aguardando Motorista</span>
+                <span>Aguardando Inicio</span>
                 <h4>{aguardando?.length}</h4>
               </div>
             </div>

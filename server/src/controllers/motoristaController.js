@@ -59,6 +59,14 @@ const destroy = async (req, res) => {
     }
 };
 
+const inativos = async (req, res) => {
+    try {
+        const motoristas = await motoristaService.getMotoristaByStatus(pessoaModel.INATIVO);
+        res.json({data: motoristas});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
 const availableDrivers = async (req, res) => {
     try {
         const motoristas = await motoristaService.getMotoristaByStatus(pessoaModel.DISPONIVEL);
@@ -94,5 +102,6 @@ module.exports = {
     destroy,
     availableDrivers,
     driversOnDuty,
-    horasTrabalhadas
+    horasTrabalhadas,
+    inativos
 };

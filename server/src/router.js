@@ -44,7 +44,7 @@ authRouter.put('/motorista/:id',checkRole(['supervisor']), motoristaController.u
 authRouter.delete('/motorista/:id',checkRole([ 'supervisor']), motoristaController.destroy);
 authRouter.get('/motoristas-disponiveis',checkRole(['motorista', 'supervisor']), motoristaController.availableDrivers);
 authRouter.get('/motoristas-servico',checkRole(['motorista', 'supervisor']), motoristaController.driversOnDuty);
-authRouter.get('/motoristas-aguardando',checkRole(['motorista', 'supervisor']), motoristaController.availableDrivers);
+authRouter.get('/motoristas-aguardando',checkRole(['motorista', 'supervisor']), motoristaController.inativos);
 authRouter.get('/motorista-horas-trabalhadas',checkRole(['motorista', 'supervisor']), motoristaController.horasTrabalhadas);
 
 // Rotas de Marcas
@@ -82,6 +82,8 @@ authRouter.delete('/supervisor/:id',checkRole([ 'supervisor']), supervisorContro
 authRouter.get('/servico',checkRole(['motorista', 'supervisor']), servicoController.index);
 authRouter.get('/servico/:id',checkRole(['motorista', 'supervisor']), servicoController.show);
 authRouter.get('/servico-andamento',checkRole(['motorista', 'supervisor']), servicoController.getByAndamento);
+authRouter.get('/servico-aguardando',checkRole(['motorista', 'supervisor']), servicoController.getByAguardando);
+authRouter.get('/servico-finalizados-ontem',checkRole(['motorista', 'supervisor']), servicoController.getByFinalizadosOntem);
 authRouter.post('/servico',checkRole([ 'supervisor']), servicoController.create);
 authRouter.put('/servico/:id/iniciar',checkRole(['motorista', 'supervisor']), servicoController.iniciar);
 authRouter.put('/servico/:id/finalizar',checkRole(['motorista', 'supervisor']), servicoController.finalizar);
